@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class playerScript : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -19,8 +21,8 @@ public class playerScript : MonoBehaviour
     public float crouchingMultiplier = 0.5f;
 
     [Header("Player Dimensions")]
-    public float playerHeight = 1f;
-    public float playerWidth = 0.5f;
+    public Vector2 standingCollider = new Vector2(1.6f, 3.4f);
+    public Vector2 crouchingCollider = new Vector2(2.2f, 2.27f);
 
     [Header("Jumping")]
     public float jumpForce = 600f;
@@ -38,20 +40,29 @@ public class playerScript : MonoBehaviour
     private bool tryStandUp;
     private bool isSprinting;
     private bool isCrouching;
+    private bool isWalking;
+    private bool isJumping;
     private float moveDirection = 0;
     private LayerMask groundLayers;
     private Rigidbody2D rbody;
+    private Animator animator;
     private BoxCollider2D boxCollider;
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
         rbody = GetComponent<Rigidbody2D>();
         groundLayers = LayerMask.GetMask("Platform", "Solid Platform");
         boxCollider = GetComponent<BoxCollider2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         lastGrounded = 0f;
         lastJump = 0f;
         tryStandUp = false;
         isSprinting = false;
+        isCrouching = false;
+        isWalking = false;
+        isJumping = false;
         moveDirection = 0f;
         lastWallJump = 0f;
         currentJumpState = jumpState.NoJump;
@@ -64,8 +75,25 @@ public class playerScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Set last grounded for jumping timings
         bool onGround = OnGround();
+        isWalking = Mathf.Abs(rbody.linearVelocityX) > 0.05f;
+        isJumping = !onGround;
+
+        // Set animator booleans
+        animator.SetBool("Walking", isWalking);
+        animator.SetBool("Jumping", isJumping);
+        animator.SetBool("Crouching", isCrouching);
+
+        if (rbody.linearVelocityX < -0.05f)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else if (rbody.linearVelocityX > 0.05f)
+        {
+            spriteRenderer.flipX = false;
+        }
+
+        // Set last grounded for jumping timings
         if (onGround)
         {
             lastGrounded = Time.time;
@@ -173,29 +201,16 @@ public class playerScript : MonoBehaviour
     {
         LayerMask solidPlatform = LayerMask.GetMask("Solid Platform");
         float rayDistance = 0.025f;
-        RaycastHit2D topHit;
-        RaycastHit2D middleHit;
-        RaycastHit2D bottomHit;
-        if (!isCrouching)
-        {
-            topHit = Physics2D.Raycast(new Vector2(transform.position.x - playerWidth * 0.5f, transform.position.y + playerHeight * 0.5f), Vector2.left, rayDistance, solidPlatform);
-            middleHit = Physics2D.Raycast(new Vector2(transform.position.x - playerWidth * 0.5f, transform.position.y), Vector2.left, rayDistance, solidPlatform);
-            bottomHit = Physics2D.Raycast(new Vector2(transform.position.x - playerWidth * 0.5f, transform.position.y - playerHeight * 0.5f), Vector2.left, rayDistance, solidPlatform);
-        }
-        else
-        {
-            topHit = Physics2D.Raycast(new Vector2(transform.position.x - playerWidth * 0.5f, transform.position.y + playerHeight * 0.25f), Vector2.left, rayDistance, solidPlatform);
-            middleHit = Physics2D.Raycast(new Vector2(transform.position.x - playerWidth * 0.5f, transform.position.y), Vector2.left, rayDistance, solidPlatform);
-            bottomHit = Physics2D.Raycast(new Vector2(transform.position.x - playerWidth * 0.5f, transform.position.y - playerHeight * 0.25f), Vector2.left, rayDistance, solidPlatform);
-        }
-        if (topHit.collider != null || middleHit.collider != null || bottomHit.collider != null)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+
+        float halfWidth = boxCollider.size.x * transform.localScale.x * 0.5f;
+        float halfHeight = boxCollider.size.y * transform.localScale.y * 0.5f;
+        Vector2 colliderCenter = (Vector2)transform.position + boxCollider.offset * transform.localScale;
+
+        RaycastHit2D topHit = Physics2D.Raycast(new Vector2(colliderCenter.x - halfWidth, colliderCenter.y + halfHeight), Vector2.left, rayDistance, solidPlatform);
+        RaycastHit2D middleHit = Physics2D.Raycast(new Vector2(colliderCenter.x - halfWidth, colliderCenter.y), Vector2.left, rayDistance, solidPlatform);
+        RaycastHit2D bottomHit = Physics2D.Raycast(new Vector2(colliderCenter.x - halfWidth, colliderCenter.y - halfHeight), Vector2.left, rayDistance, solidPlatform);
+
+        return !(topHit.collider != null || middleHit.collider != null || bottomHit.collider != null);
     }
 
     // Checks if a player can move right by checking for collisions with Solid Platform layer
@@ -203,43 +218,52 @@ public class playerScript : MonoBehaviour
     {
         LayerMask solidPlatform = LayerMask.GetMask("Solid Platform");
         float rayDistance = 0.025f;
-        RaycastHit2D topHit;
-        RaycastHit2D middleHit;
-        RaycastHit2D bottomHit;
-        if (!isCrouching)
-        {
-            topHit = Physics2D.Raycast(new Vector2(transform.position.x + playerWidth * 0.5f, transform.position.y + playerHeight * 0.5f), Vector2.right, rayDistance, solidPlatform);
-            middleHit = Physics2D.Raycast(new Vector2(transform.position.x + playerWidth * 0.5f, transform.position.y), Vector2.right, rayDistance, solidPlatform);
-            bottomHit = Physics2D.Raycast(new Vector2(transform.position.x + playerWidth * 0.5f, transform.position.y - playerHeight * 0.5f), Vector2.right, rayDistance, solidPlatform);
-        }
-        else
-        {
-            topHit = Physics2D.Raycast(new Vector2(transform.position.x + playerWidth * 0.5f, transform.position.y + playerHeight * 0.25f), Vector2.right, rayDistance, solidPlatform);
-            middleHit = Physics2D.Raycast(new Vector2(transform.position.x + playerWidth * 0.5f, transform.position.y), Vector2.right, rayDistance, solidPlatform);
-            bottomHit = Physics2D.Raycast(new Vector2(transform.position.x + playerWidth * 0.5f, transform.position.y - playerHeight * 0.25f), Vector2.right, rayDistance, solidPlatform);
-        }
-        if (topHit.collider != null || middleHit.collider != null || bottomHit.collider != null)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+
+        float halfWidth = boxCollider.size.x * transform.localScale.x * 0.5f;
+        float halfHeight = boxCollider.size.y * transform.localScale.y * 0.5f;
+        Vector2 colliderCenter = (Vector2)transform.position + boxCollider.offset * transform.localScale;
+
+        RaycastHit2D topHit = Physics2D.Raycast(new Vector2(colliderCenter.x + halfWidth, colliderCenter.y + halfHeight), Vector2.right, rayDistance, solidPlatform);
+        RaycastHit2D middleHit = Physics2D.Raycast(new Vector2(colliderCenter.x + halfWidth, colliderCenter.y), Vector2.right, rayDistance, solidPlatform);
+        RaycastHit2D bottomHit = Physics2D.Raycast(new Vector2(colliderCenter.x + halfWidth, colliderCenter.y - halfHeight), Vector2.right, rayDistance, solidPlatform);
+
+        return !(topHit.collider != null || middleHit.collider != null || bottomHit.collider != null);
     }
 
     // Checks if player is touching the ground
     private bool OnGround()
     {
-        float yOffset = !isCrouching ? playerHeight * 0.5f : playerHeight * 0.25f;
-        float rayStartY = transform.position.y - yOffset + 0.05f;
+        float halfHeight = boxCollider.size.y * transform.localScale.y * 0.5f;
+        float halfWidth = boxCollider.size.x * transform.localScale.x * 0.5f;
+        Vector2 colliderCenter = (Vector2)transform.position + boxCollider.offset * transform.localScale;
+
+        float rayStartY = colliderCenter.y - halfHeight + 0.05f;
         float rayDistance = 0.2f;
 
-        RaycastHit2D hitLeft = Physics2D.Raycast(new Vector2(transform.position.x - playerWidth * 0.45f, rayStartY), Vector2.down, rayDistance, groundLayers);
-        RaycastHit2D hitMiddle = Physics2D.Raycast(new Vector2(transform.position.x, rayStartY), Vector2.down, rayDistance, groundLayers);
-        RaycastHit2D hitRight = Physics2D.Raycast(new Vector2(transform.position.x + playerWidth * 0.45f, rayStartY), Vector2.down, rayDistance, groundLayers);
+        RaycastHit2D hitLeft = Physics2D.Raycast(new Vector2(colliderCenter.x - halfWidth * 0.9f, rayStartY), Vector2.down, rayDistance, groundLayers);
+        RaycastHit2D hitMiddle = Physics2D.Raycast(new Vector2(colliderCenter.x, rayStartY), Vector2.down, rayDistance, groundLayers);
+        RaycastHit2D hitRight = Physics2D.Raycast(new Vector2(colliderCenter.x + halfWidth * 0.9f, rayStartY), Vector2.down, rayDistance, groundLayers);
 
-        return IsValidGroundHit(hitLeft, yOffset) || IsValidGroundHit(hitMiddle, yOffset) || IsValidGroundHit(hitRight, yOffset);
+        // Debug visualization
+        Debug.DrawRay(new Vector2(colliderCenter.x - halfWidth * 0.9f, rayStartY), Vector2.down * rayDistance, Color.red);
+        Debug.DrawRay(new Vector2(colliderCenter.x, rayStartY), Vector2.down * rayDistance, Color.green);
+        Debug.DrawRay(new Vector2(colliderCenter.x + halfWidth * 0.9f, rayStartY), Vector2.down * rayDistance, Color.blue);
+
+        return IsValidGroundHit(hitLeft, halfHeight) || IsValidGroundHit(hitMiddle, halfHeight) || IsValidGroundHit(hitRight, halfHeight);
+    }
+
+    // Checks if a player can stand up by checking for collisions above the player
+    private bool CanStandUp()
+    {
+        float halfWidth = boxCollider.size.x * transform.localScale.x * 0.5f;
+        float checkHeight = standingCollider.y * transform.localScale.y * 0.75f;
+        Vector2 colliderCenter = (Vector2)transform.position + boxCollider.offset * transform.localScale;
+
+        RaycastHit2D hitLeft = Physics2D.Raycast(new Vector2(colliderCenter.x - halfWidth, colliderCenter.y), Vector2.up, checkHeight, groundLayers);
+        RaycastHit2D hitMiddle = Physics2D.Raycast(new Vector2(colliderCenter.x, colliderCenter.y), Vector2.up, checkHeight, groundLayers);
+        RaycastHit2D hitRight = Physics2D.Raycast(new Vector2(colliderCenter.x + halfWidth, colliderCenter.y), Vector2.up, checkHeight, groundLayers);
+
+        return (hitLeft.collider == null && hitMiddle.collider == null && hitRight.collider == null);
     }
 
     bool IsValidGroundHit(RaycastHit2D hit, float yOffset)
@@ -249,26 +273,11 @@ public class playerScript : MonoBehaviour
         // Must have upward-facing normal
         if (hit.normal.y <= 0.7f) return false;
 
-        // Hit point must be below the player's center (not to the side)
-        if (hit.point.y >= transform.position.y - yOffset) return false;
+        // Hit point must be below the collider's center (not to the side)
+        Vector2 colliderCenter = (Vector2)transform.position + boxCollider.offset * transform.localScale;
+        if (hit.point.y >= colliderCenter.y - yOffset) return false;
 
         return true;
-    }
-
-    // Checks if a player can stand up by checking for collisions above the player
-    private bool CanStandUp()
-    {
-        RaycastHit2D hitLeft = Physics2D.Raycast(new Vector2(transform.position.x - playerWidth * 0.5f, transform.position.y), Vector2.up, playerHeight * 0.75f, groundLayers);
-        RaycastHit2D hitMiddle = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.up, playerHeight * 0.75f, groundLayers);
-        RaycastHit2D hitRight = Physics2D.Raycast(new Vector2(transform.position.x + playerWidth * 0.5f, transform.position.y), Vector2.up, playerHeight * 0.75f, groundLayers);
-        if (hitLeft.collider == null && hitMiddle.collider == null && hitRight.collider == null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     void OnMove(InputValue value)
@@ -372,8 +381,8 @@ public class playerScript : MonoBehaviour
     {
         Vector2 currentVelocity = rbody.linearVelocity;
         isCrouching = true;
-        transform.localScale = new Vector3(transform.localScale.x, playerHeight * 0.5f, transform.localScale.z);
-        transform.position = new Vector3(transform.position.x, transform.position.y - playerHeight * 0.25f, transform.position.z);
+        boxCollider.size = crouchingCollider;
+        transform.localScale = new Vector3(0.3f, 0.3f, 1f);
         rbody.linearVelocity = currentVelocity;
     }
 
@@ -381,9 +390,8 @@ public class playerScript : MonoBehaviour
     {
         Vector2 currentVelocity = rbody.linearVelocity;
         isCrouching = false;
-        transform.localScale = new Vector3(transform.localScale.x, playerHeight, transform.localScale.z);
-        transform.position = new Vector3(transform.position.x, transform.position.y + playerHeight * 0.25f, transform.position.z);
+        boxCollider.size = standingCollider;
+        transform.localScale = new Vector3(0.35f, 0.35f, 1f);
         rbody.linearVelocity = currentVelocity;
     }
-
 }
