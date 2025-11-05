@@ -21,6 +21,6 @@ public class MenuSceneManagerScript : MonoBehaviour
     }
     public void hitPlay()
     {
-        SceneManager.LoadScene("Level1-Caleb");
+        SceneManager.LoadScene("Level1LoadingScreen");
     }
 }

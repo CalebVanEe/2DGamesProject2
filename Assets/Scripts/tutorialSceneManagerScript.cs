@@ -62,6 +62,6 @@ public class tutorialSceneManagerScript : MonoBehaviour
     }
     public void nextLevel()
     {
-        SceneManager.LoadScene("Level1-Caleb");
+        SceneManager.LoadScene("Level1LoadingScreen");
     }
 }

@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/TutorialScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/Scenes/Level1LoadingScreen.unity
+    guid: c589cc0345a32444ea8d5fa90a6064d3
+  - enabled: 1
     path: Assets/Scenes/Level1-Caleb.unity
     guid: c12e764f818eba14f99396342dc8683f
   - enabled: 1
@@ -18,8 +21,14 @@ EditorBuildSettings:
     path: Assets/Scenes/Level2-Jacqueline.unity
     guid: a11f0dd32617f1747a85fafad8bd24ac
   - enabled: 1
+    path: Assets/Scenes/Level3LoadingScreen.unity
+    guid: f1096a8452736dd46a5962712126ccb7
+  - enabled: 1
     path: Assets/Scenes/Level3-Daniel.unity
     guid: d69eaf77ecb7101499c93471d91591e0
+  - enabled: 1
+    path: Assets/Scenes/GameCompletionLoadingScreen.unity
+    guid: 91c169f7a5bd55641be53dd4f1f93cc2
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 15ba2adc6e3aaed41a573eaf29e9d64d

@@ -50,15 +50,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "OpenDoor",
-                    "type": "Button",
-                    "id": "b1096260-373b-46f2-ae1c-a6d9bd386319",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -136,17 +127,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a5cf68e5-5b97-4dbc-97fd-23aca79a299e",
-                    "path": "<Keyboard>/f",
-                    "interactions": "Press(behavior=2)",
-                    "processors": "",
-                    "groups": ";Default",
-                    "action": "OpenDoor",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

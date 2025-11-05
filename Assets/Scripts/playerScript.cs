@@ -24,10 +24,6 @@ public class playerScript : MonoBehaviour
 
     [Header("Jumping")]
     public float jumpForce = 600f;
-
-    [Header("Scene Manager")]
-    public LevelSceneManagerScript levelSceneManager;
-
     private enum jumpState
     {
         Walking,
@@ -68,12 +64,6 @@ public class playerScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Check is player fell out of bounds
-        if (transform.position.y < -10)
-        {
-            levelSceneManager.RespawnLevel();
-        }
-
         // Set last grounded for jumping timings
         bool onGround = OnGround();
         if (onGround)
@@ -377,19 +367,6 @@ public class playerScript : MonoBehaviour
             }
         }
     }
-
-    void OnOpenDoor(InputValue button)
-    {
-        if (button.isPressed)
-        {
-            levelSceneManager.OpenAttempt(true);
-        }
-        else
-        {
-            levelSceneManager.OpenAttempt(false);
-        }
-    }
-
     // Helper functions to set the player's scale and position when crouching or standing up
     private void StartCrouching()
     {
