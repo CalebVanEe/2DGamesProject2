@@ -44,11 +44,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc26c767452f7904a89414b400dedcac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  Level1Message: You are in the depths of the prison in the torture chamber. You
-    must find your way out to survive
+  Level1FirstMessage: Your name is Dmitri. You have been wrongfully imprisoned in
+    a Russian prison for the past 10 years
+  Level1SecondMessage: You have finally had enough and decide to escape, but it won't
+    be easy
+  Level1ThirdMessage: You are in the depths of the prison in the torture chamber.
+    You must find your way out to survive
   Level2Message: You've escaped the Torture Chamber, and find yourself locked in
     the Warden's Office
   Level3Message: You've made your way out to the prison yard. The guards have discovered
     your absence and are looking for you. Escape or die
-  levelIndex: 2
+  CompletionMessage: You finally escaped the Russian Prison and reunited with your
+    family after 10 years of imprisonment
+  levelIndex: 1
   messageText: {fileID: 0}
