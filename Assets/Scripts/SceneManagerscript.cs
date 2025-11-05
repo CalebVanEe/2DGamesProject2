@@ -2,10 +2,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using System.Threading;
 
 public class SceneManagerscript : MonoBehaviour
 {
     public GameObject bookshelf;
+    public TMPro.TMP_Text timer;
     Vector3 temp;
     int keysExist = 2;
     int keysFound = 0;
@@ -18,6 +20,10 @@ public class SceneManagerscript : MonoBehaviour
     float speed = 4f;
     List<GameObject> bats = new List<GameObject>();
     bool gotToPlayer;
+    float myStartTime;
+    float lastLevelsTime;
+    float secondsSince = 0;
+    float display = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,20 +33,29 @@ public class SceneManagerscript : MonoBehaviour
         key2.GetComponent<Collider2D>().enabled = false;
         door.GetComponent<Animator>().enabled = false;
         batTime = Time.time;
+        myStartTime = Time.time; 
+        lastLevelsTime = PlayerPrefs.GetFloat("LevelTime");
     }
 
     // Update is called once per frame
     void Update()
     {
-    
+        updateTimer();
         if (Time.time - batTime > 6){
             batTime = Time.time;
             spawnBat();
         }
         
+        
   
     }
 
+    public void updateTimer()
+    {
+        secondsSince = Time.time - myStartTime;
+        display = lastLevelsTime + secondsSince;
+        timer.text = display.ToString("000");
+    }
     public void foundKey()
     {
         keysFound++;
@@ -134,11 +149,14 @@ public class SceneManagerscript : MonoBehaviour
     }
     public void nextScene()
     {
-        SceneManager.LoadScene("Level3-Daniel");
+        PlayerPrefs.SetFloat("LevelTime", display);
+        SceneManager.LoadScene("Level2Loading");
+        
     }
     
     public void batHitPlayer()
     {
+        PlayerPrefs.SetFloat("LevelTime", display);
         SceneManager.LoadScene("level2-Jacqueline");
     }
 }
