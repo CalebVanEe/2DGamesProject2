@@ -12,9 +12,11 @@ public class tutorialSceneManagerScript : MonoBehaviour
     int numKeys = 1;
     int keysCollected = 0;
     public GameObject door;
+    bool teachSprint;
     void Start()
     {
         teachCrouch = false;
+        teachSprint = false;
         door.GetComponent<Animator>().enabled = false;
         teachKey = false;
         instructions.text = "Use the 'a' and 'd' keys to move";
@@ -32,6 +34,14 @@ public class tutorialSceneManagerScript : MonoBehaviour
             instructions.text = "Use the 's' key to crouch and inspect what's under the wall";
             instructions.enabled = true;
             teachCrouch = true;
+            Invoke("dissapearText", 2);
+        }
+
+        if(player.transform.position.x >=4 && player.transform.position.x <=5 && player.transform.position.y <= 2 && player.transform.position.y > 0 && !teachSprint)
+        {
+            instructions.text = "Use the 'shift' key to sprint";
+            instructions.enabled = true;
+            teachSprint = true;
             Invoke("dissapearText", 2);
         }
         
