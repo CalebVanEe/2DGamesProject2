@@ -150,7 +150,7 @@ public class SceneManagerscript : MonoBehaviour
     public void nextScene()
     {
         PlayerPrefs.SetFloat("LevelTime", display);
-        SceneManager.LoadScene("Level2Loading");
+        SceneManager.LoadScene("Level3LoadingScreen");
         
     }
     
