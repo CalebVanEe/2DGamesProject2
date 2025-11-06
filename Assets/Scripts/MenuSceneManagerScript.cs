@@ -6,7 +6,9 @@ public class MenuSceneManagerScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        PlayerPrefs.SetInt("Lives", 5);
+        PlayerPrefs.SetFloat("LevelTime", 0);
+        PlayerPrefs.SetString("CurrentLevel", "Level1-Caleb");
     }
 
     // Update is called once per frame

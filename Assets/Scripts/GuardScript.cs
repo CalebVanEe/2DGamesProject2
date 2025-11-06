@@ -35,7 +35,7 @@ public class GuardScript : MonoBehaviour
 
 
     void catchPlayer() {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("DeathScene");
     }
 
     // Update is called once per frame

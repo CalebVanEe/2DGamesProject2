@@ -13,20 +13,23 @@ public class LoadingSceneManagerScript : MonoBehaviour
     public string CompletionMessage = "You finally escaped the Russian Prison and reunited with your family after 10 years of imprisonment";
     public int levelIndex;
     public TMP_Text messageText;
-
+    public string currentLevelName;
     void Start()
     {
         DisplayMessage();
+        PlayerPrefs.SetString("CurrentLevel", currentLevelName);
     }
 
     void DisplayMessage()
     {
         if (levelIndex == 1)
         {
+
             StartCoroutine(DisplayLevel1Messages());
         }
         else if (levelIndex == 2)
         {
+
             StartCoroutine(TypeText(Level2Message));
             Invoke("LoadLevel2", 6f);
         }
@@ -38,7 +41,7 @@ public class LoadingSceneManagerScript : MonoBehaviour
         else if (levelIndex == 4)
         {
             StartCoroutine(TypeText(CompletionMessage));
-            Invoke("LoadMainMenu", 10f);
+            Invoke("WinningScene", 10f);
         }
     }
 
@@ -72,16 +75,23 @@ public class LoadingSceneManagerScript : MonoBehaviour
 
     void LoadLevel1()
     {
+        currentLevelName = "Level1-Caleb";
+        PlayerPrefs.SetString("CurrentLevel", currentLevelName);
         SceneManager.LoadScene("Level1-Caleb");
     }
 
     void LoadLevel2()
     {
+        currentLevelName = "Level2-Jacqueline";
+        PlayerPrefs.SetString("CurrentLevel", currentLevelName);
         SceneManager.LoadScene("Level2-Jacqueline");
     }
 
     void LoadLevel3()
     {
+
+        currentLevelName = "Level3-Daniel";
+        PlayerPrefs.SetString("CurrentLevel", currentLevelName);
         SceneManager.LoadScene("Level3-Daniel");
     }
 
@@ -89,4 +99,9 @@ public class LoadingSceneManagerScript : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+
+    void WinningScene()
+    {
+        SceneManager.LoadScene("WinningScene");
+    }   
 }
