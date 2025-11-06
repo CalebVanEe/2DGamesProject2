@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2202377177140364360}
   - component: {fileID: 7728516049357958347}
   - component: {fileID: 6898868504717306017}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 4879529054921560168}
   - component: {fileID: 7653813652230269564}
   - component: {fileID: 8178065681720558207}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 4534268437364122551}
   - component: {fileID: 4637282127177502362}
   - component: {fileID: 2320339746567800862}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tubey_Thingy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
