@@ -2269,6 +2269,7 @@ MonoBehaviour:
   Door1Location: {x: 153, y: 13, z: 0}
   player: {fileID: 1464700453}
   door: {fileID: 730862832}
+  timerText: {fileID: 2031247744}
   level: 1
 --- !u!4 &635514254
 Transform:
@@ -6645,6 +6646,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 4176099508960417207, guid: 61c6f0dcccc796442a2b9581d3063d5d, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6325873325525394139, guid: 61c6f0dcccc796442a2b9581d3063d5d, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -6730,6 +6735,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61c6f0dcccc796442a2b9581d3063d5d, type: 3}
+--- !u!114 &2031247744 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 479427961374334645, guid: 61c6f0dcccc796442a2b9581d3063d5d, type: 3}
+  m_PrefabInstance: {fileID: 2031247743}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &2037505815
 PrefabInstance:
   m_ObjectHideFlags: 0
