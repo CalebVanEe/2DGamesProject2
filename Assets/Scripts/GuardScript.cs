@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.UI.Image;
 
 [RequireComponent(typeof(Animator))]
 
@@ -8,13 +9,15 @@ public class GuardScript : MonoBehaviour
 {
 
     public float walkingRange;
-    public float flashlightLengh;
+    public float flashlightLength;
     public float flashlightAngle;
     public float moveSpeed;
 
     Animator _animator;
-
     Rigidbody2D _rbody;
+
+    public LayerMask _playerLayer;
+    private Vector2 flashLightDirection = Vector2.right;
     private float _startX;
     private bool facingRight = true;
     private float moveDirection;
@@ -22,7 +25,6 @@ public class GuardScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Flip();
 
         _animator = GetComponent<Animator>();
         _startX = transform.position.x;
@@ -40,40 +42,53 @@ public class GuardScript : MonoBehaviour
     void Update()
     {
         lookForPlayer();
-        //if (transform.position.x > _startX + walkingRange)
-        //{
-        //    Flip();
-        //}
-        //else if (transform.position.x < _startX - walkingRange)
-        //{
-        //    Flip();
-        //}
-        //else {
-        //    _rbody.linearVelocityX = moveSpeed * moveDirection;
-        //}
-        _rbody.linearVelocityX = moveSpeed * -moveDirection;
+        if (transform.position.x > _startX + walkingRange && moveDirection > 0)
+        {
+            Flip();
+        }
+        else if (transform.position.x < _startX - walkingRange && moveDirection < 0) 
+        {
+            Flip();
+        }
+        else
+        {
+            _rbody.linearVelocityX = moveSpeed * moveDirection;
+        }
 
     }
 
+    private RaycastHit2D hit;
     void lookForPlayer() {
-        Vector2 hit1Direction = Quaternion.Euler(0, 0, -flashlightAngle) * -transform.up;
-        Vector2 hit2Direction = Quaternion.Euler(0, 0, flashlightAngle) * -transform.up;
-
-
-        RaycastHit2D hit1 = Physics2D.Raycast(transform.position, hit1Direction, flashlightLengh);
-        RaycastHit2D hit2 = Physics2D.Raycast(transform.position, hit2Direction, flashlightLengh);
+        Vector2 hitPosition = new Vector2(transform.position.x, transform.position.y);
 
 
 
-        if (hit1.collider != null && hit1.collider.CompareTag("Player") || hit2.collider != null && hit2.collider.CompareTag("Player"))
+        hit = Physics2D.Raycast(hitPosition, flashLightDirection, flashlightLength, _playerLayer);
+
+        Debug.DrawRay(hitPosition, flashLightDirection * flashlightLength, Color.red);
+
+
+
+        if (hit.collider != null )
         {
+            Debug.Log("Player Spotted");
             _animator.SetBool("seesPlayer", true);
-            Invoke("catchPlayer", 1f);
+            catchPlayer();
         }
     }
     void Flip()
     {
         facingRight = !facingRight;
+
+        if (facingRight)
+        {
+            flashLightDirection = Vector2.right;
+        }
+        else
+        {
+            flashLightDirection = Vector2.left;
+        }
+
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
