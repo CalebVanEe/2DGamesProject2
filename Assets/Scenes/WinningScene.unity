@@ -349,9 +349,9 @@ RectTransform:
   - {fileID: 1484321442}
   m_Father: {fileID: 331288757}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -131, y: -80}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 100, y: 47}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &681353261
@@ -398,8 +398,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameOverScript, Assembly-CSharp
+      - m_Target: {fileID: 1588440442}
+        m_TargetAssemblyTypeName: WinningSceneScript, Assembly-CSharp
         m_MethodName: OnMenuPress
         m_Mode: 1
         m_Arguments:
@@ -697,9 +697,9 @@ RectTransform:
   - {fileID: 1855893289}
   m_Father: {fileID: 331288757}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 128.2, y: -80}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -100, y: 47}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1037725313
@@ -746,8 +746,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameOverScript, Assembly-CSharp
+      - m_Target: {fileID: 1588440442}
+        m_TargetAssemblyTypeName: WinningSceneScript, Assembly-CSharp
         m_MethodName: OnCreditPress
         m_Mode: 1
         m_Arguments:
