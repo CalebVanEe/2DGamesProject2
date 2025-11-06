@@ -18,7 +18,7 @@ public class WinningSceneScript : MonoBehaviour
 
         if (!PlayerPrefs.HasKey("Highscore"))
         {
-            PlayerPrefs.SetString("Highscore", PlayerPrefs.GetFloat("LevelTime").ToString());
+            PlayerPrefs.SetFloat("Highscore", PlayerPrefs.GetFloat("LevelTime"));
 
         } else if (PlayerPrefs.GetFloat("LevelTime") < PlayerPrefs.GetFloat("Highscore"))
         {
