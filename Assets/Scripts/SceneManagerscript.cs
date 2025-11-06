@@ -26,6 +26,7 @@ public class SceneManagerscript : MonoBehaviour
     private float startTime;
     float secondsSince = 0;
     float display = 0;
+    bool doorDone = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -124,8 +125,10 @@ public class SceneManagerscript : MonoBehaviour
     public void hitDoor() { 
         if(keysFound == keysExist)
         {
+            doorDone = true;
             door.GetComponent<Animator>().enabled = true;
             Invoke("nextScene", 2);
+
         }
     }
 
@@ -165,18 +168,21 @@ public class SceneManagerscript : MonoBehaviour
     
     public void batHitPlayer()
     {
-        PlayerPrefs.SetFloat("LevelTime", totalTime);
-
-        int previousLives = PlayerPrefs.GetInt("Lives");
-        if (previousLives <= 1)
+        if (!doorDone)
         {
-            SceneManager.LoadScene("GameOverScene");
-        }
-        else
-        {
+            PlayerPrefs.SetFloat("LevelTime", totalTime);
 
-            PlayerPrefs.SetInt("Lives", (previousLives - 1));
-            SceneManager.LoadScene("DeathScene");
+            int previousLives = PlayerPrefs.GetInt("Lives");
+            if (previousLives <= 1)
+            {
+                SceneManager.LoadScene("GameOverScene");
+            }
+            else
+            {
+
+                PlayerPrefs.SetInt("Lives", (previousLives - 1));
+                SceneManager.LoadScene("DeathScene");
+            }
         }
     }
 }
