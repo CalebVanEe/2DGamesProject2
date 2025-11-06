@@ -102,6 +102,7 @@ public class LevelSceneManagerScript : MonoBehaviour
     }
     private void NextScene()
     {
+        PlayerPrefs.SetFloat("LevelTime", totalTime);
         SceneManager.LoadScene("Level2LoadingScreen");
     }
     public void KeyCollected()

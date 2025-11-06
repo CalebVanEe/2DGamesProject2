@@ -3,11 +3,12 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Threading;
+using TMPro;
 
 public class SceneManagerscript : MonoBehaviour
 {
     public GameObject bookshelf;
-    public TMPro.TMP_Text timer;
+    public TMP_Text timerText;
     Vector3 temp;
     int keysExist = 2;
     int keysFound = 0;
@@ -20,8 +21,9 @@ public class SceneManagerscript : MonoBehaviour
     float speed = 4f;
     List<GameObject> bats = new List<GameObject>();
     bool gotToPlayer;
-    float myStartTime;
-    float lastLevelsTime;
+    private int totalTime;
+    private float lastLevelTime;
+    private float startTime;
     float secondsSince = 0;
     float display = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,28 +35,35 @@ public class SceneManagerscript : MonoBehaviour
         key2.GetComponent<Collider2D>().enabled = false;
         door.GetComponent<Animator>().enabled = false;
         batTime = Time.time;
-        myStartTime = Time.time; 
-        lastLevelsTime = PlayerPrefs.GetFloat("LevelTime");
+        startTime = Time.time; 
+        lastLevelTime = PlayerPrefs.GetFloat("LevelTime");
     }
 
     // Update is called once per frame
     void Update()
     {
         updateTimer();
-        if (Time.time - batTime > 6){
+        if (Time.time - batTime > 6)
+        {
             batTime = Time.time;
             spawnBat();
         }
-        
-        
-  
     }
 
     public void updateTimer()
     {
-        secondsSince = Time.time - myStartTime;
-        display = lastLevelsTime + secondsSince;
-        timer.text = display.ToString("000");
+        float levelTime = Time.time - startTime;
+        totalTime = Mathf.RoundToInt(lastLevelTime + levelTime);
+        int min = (totalTime / 60);
+        int sec = totalTime % 60;
+        if (sec < 10)
+        {
+            timerText.text = min.ToString() + ":0" + sec.ToString();
+        }
+        else
+        {
+            timerText.text = min.ToString() + ":" + sec.ToString();
+        }
     }
     public void foundKey()
     {
@@ -149,14 +158,25 @@ public class SceneManagerscript : MonoBehaviour
     }
     public void nextScene()
     {
-        PlayerPrefs.SetFloat("LevelTime", display);
+        PlayerPrefs.SetFloat("LevelTime", totalTime);
         SceneManager.LoadScene("Level3LoadingScreen");
         
     }
     
     public void batHitPlayer()
     {
-        PlayerPrefs.SetFloat("LevelTime", display);
-        SceneManager.LoadScene("level2-Jacqueline");
+        PlayerPrefs.SetFloat("LevelTime", totalTime);
+
+        int previousLives = PlayerPrefs.GetInt("Lives");
+        if (previousLives <= 1)
+        {
+            SceneManager.LoadScene("GameOverScene");
+        }
+        else
+        {
+
+            PlayerPrefs.SetInt("Lives", (previousLives - 1));
+            SceneManager.LoadScene("DeathScene");
+        }
     }
 }
