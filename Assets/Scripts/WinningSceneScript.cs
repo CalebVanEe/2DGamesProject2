@@ -16,7 +16,7 @@ public class WinningSceneScript : MonoBehaviour
         int Hsec;
         Score.text = "Your Time: " + Smin + ":" + Ssec;
 
-        if (!PlayerPrefs.HasKey("Highscore"))
+        if (PlayerPrefs.GetFloat("Highscore") == 0)
         {
             PlayerPrefs.SetFloat("Highscore", PlayerPrefs.GetFloat("LevelTime"));
 
