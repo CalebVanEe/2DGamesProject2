@@ -8,7 +8,7 @@ public class LoadingSceneManagerScript : MonoBehaviour
     public string Level1FirstMessage = "Your name is Dimitri. You have been wrongfully imprisoned in a Russian prison for the past 10 years";
     public string Level1SecondMessage = "You have finally had enough and decide to escape, but it won't be easy";
     public string Level1ThirdMessage = "You are in the depths of the prison in the torture chamber. You must find your way out to survive";
-    public string Level2Message = "You've escaped the Torture Chamber, and find yourself locked in the Warden's Office";
+    public string Level2Message = "You've escaped the Torture Chamber, and find yourself locked in the Warden's Office. Find the 2 keys to unlock the door";
     public string Level3Message = "You've made your way out to the prison yard. The guards have discovered your absence and are looking for you. Escape or die";
     public string CompletionMessage = "You finally escaped the Russian Prison and reunited with your family after 10 years of imprisonment";
     public int levelIndex;
@@ -31,7 +31,7 @@ public class LoadingSceneManagerScript : MonoBehaviour
         {
 
             StartCoroutine(TypeText(Level2Message));
-            Invoke("LoadLevel2", 6f);
+            Invoke("LoadLevel2", 7f);
         }
         else if (levelIndex == 3)
         {

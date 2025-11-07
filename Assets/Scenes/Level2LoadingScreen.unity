@@ -693,6 +693,11 @@ PrefabInstance:
       value: You are in the depths of the prison in the torture chamber. You must
         find your way out to survive.
       objectReference: {fileID: 0}
+    - target: {fileID: 896629745507218276, guid: 694d2a0dbf93a624fbf1729ed0aedc89, type: 3}
+      propertyPath: Level2Message
+      value: You've escaped the Torture Chamber, and find yourself locked in the
+        Warden's Office. Find the 2 keys to unlock the door
+      objectReference: {fileID: 0}
     - target: {fileID: 2062075138142941848, guid: 694d2a0dbf93a624fbf1729ed0aedc89, type: 3}
       propertyPath: m_Name
       value: LoadingScreenManager
