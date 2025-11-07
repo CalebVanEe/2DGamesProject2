@@ -14,7 +14,14 @@ public class GameOverScript : MonoBehaviour
 
         int Hmin;
         int Hsec;
-        Score.text = "Your Time: " + Smin + ":" + Ssec;
+        if (Ssec < 10)
+        {
+            Score.text = "Your Time: " + Smin + ":0" + Ssec;
+        }
+        else
+        {
+            Score.text = "Your Time: " + Smin + ":" + Ssec;
+        }
     }
 
     // Update is called once per frame

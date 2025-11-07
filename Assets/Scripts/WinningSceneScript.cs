@@ -14,7 +14,13 @@ public class WinningSceneScript : MonoBehaviour
 
         int Hmin;
         int Hsec;
-        Score.text = "Your Time: " + Smin + ":" + Ssec;
+        if (Ssec < 10)
+        {
+            Score.text = "Your Time: " + Smin + ":0" + Ssec;
+        }
+        else { 
+            Score.text = "Your Time: " + Smin + ":" + Ssec;
+        }
 
         if (PlayerPrefs.GetFloat("Highscore") == 0)
         {
@@ -27,7 +33,14 @@ public class WinningSceneScript : MonoBehaviour
 
         Hmin = Mathf.RoundToInt(PlayerPrefs.GetFloat("Highscore")) / 60;
         Hsec = Mathf.RoundToInt(PlayerPrefs.GetFloat("Highscore")) % 60;
-        Highscore.text += "Highscore: " + Hmin + ":" + Hsec;
+        if (Hsec < 10)
+        {
+            Highscore.text += "Highscore: " + Hmin + ":0" + Hsec;
+        }
+        else
+        {
+            Highscore.text += "Highscore: " + Hmin + ":" + Hsec;
+        }
     }
 
     // Update is called once per frame
