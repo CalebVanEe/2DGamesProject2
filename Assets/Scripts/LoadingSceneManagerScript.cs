@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LoadingSceneManagerScript : MonoBehaviour
 {
-    public string Level1FirstMessage = "Your name is Dmitri. You have been wrongfully imprisoned in a Russian prison for the past 10 years";
+    public string Level1FirstMessage = "Your name is Dimitri. You have been wrongfully imprisoned in a Russian prison for the past 10 years";
     public string Level1SecondMessage = "You have finally had enough and decide to escape, but it won't be easy";
     public string Level1ThirdMessage = "You are in the depths of the prison in the torture chamber. You must find your way out to survive";
     public string Level2Message = "You've escaped the Torture Chamber, and find yourself locked in the Warden's Office";
