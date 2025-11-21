@@ -6,7 +6,7 @@ public class goodIvyScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        floorLevelScript = GetComponent<FloorLevelScript>();
+        floorLevelScript = FindAnyObjectByType<FloorLevelScript>();
     }
 
     // Update is called once per frame

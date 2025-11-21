@@ -17,6 +17,6 @@ public class SlidingDoorScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //script.hitDoor();
+        script.hitDoor();
     }
 }

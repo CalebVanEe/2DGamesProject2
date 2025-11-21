@@ -12,10 +12,14 @@ public class FloorLevelScript : MonoBehaviour
     string code = "";
     int check = 0;
     public TMP_Text lyk;
+    public TMP_InputField codeInput;
+    public GameObject door;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        warning.gameObject.SetActive(false);
+        door.GetComponent<Animator>().enabled = false;
+        lyk.enabled = false;
+        codeInput.enabled = false;
         startTime = Time.time;
         lastLevelTime = PlayerPrefs.GetFloat("LevelTime");
         for (int i = 0; i < 4; i++)
@@ -54,7 +58,7 @@ public class FloorLevelScript : MonoBehaviour
             Debug.Log("getting closer");
          
             warning.transform.position = p;
-            warning.gameObject.SetActive(true);
+            warning.Play();
         }
     }
 
@@ -83,8 +87,30 @@ public class FloorLevelScript : MonoBehaviour
         {
             lyk.text = "The next letter of the code is: " + code[check].ToString();
         }
+        lyk.enabled = true;
         check++;
         g.GetComponent<Collider2D>().enabled = false;
+    }
+
+    public void hitDoor()
+    {
+        codeInput.enabled = true;
+        Debug.Log("Ouch");
+
+    }
+
+    public void endText()
+    {
+        Debug.Log(code);
+        if (codeInput.text.Equals(code))
+        {
+            Debug.Log("The correct Code");
+            door.GetComponent<Collider2D>().enabled = false;
+            door.GetComponent<Animator>().enabled = true;
+
+
+            //SceneManager.LoadScene("Level3-Daniel");
+        }
     }
 }
 

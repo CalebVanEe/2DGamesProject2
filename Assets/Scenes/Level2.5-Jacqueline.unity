@@ -219,7 +219,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1134942973}
+        m_TargetAssemblyTypeName: FloorLevelScript, Assembly-CSharp
+        m_MethodName: endText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -808,7 +820,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 2.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -926,7 +938,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.25
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -5602,6 +5614,8 @@ MonoBehaviour:
   warning: {fileID: 917424984}
   timerText: {fileID: 1344356487}
   lyk: {fileID: 1818763365}
+  codeInput: {fileID: 133106600}
+  door: {fileID: 1529843834}
 --- !u!4 &1134942974
 Transform:
   m_ObjectHideFlags: 0
@@ -6058,7 +6072,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.011478543, y: 0.042470813}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -6068,7 +6082,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.94, y: 1.36}
+  m_Size: {x: 0.36606878, y: 1.2750583}
   m_EdgeRadius: 0
 --- !u!114 &1529843839
 MonoBehaviour:
@@ -6355,11 +6369,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6817960017237165313, guid: 39dd885503c707d4f8928c09f9bd2836, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.7263536
+      value: -8.19
       objectReference: {fileID: 0}
     - target: {fileID: 6817960017237165313, guid: 39dd885503c707d4f8928c09f9bd2836, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.3797972
+      value: -0.89
       objectReference: {fileID: 0}
     - target: {fileID: 6817960017237165313, guid: 39dd885503c707d4f8928c09f9bd2836, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6595,7 +6609,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -334.5, y: -219.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &1902641956 stripped
@@ -6954,6 +6968,10 @@ PrefabInstance:
     - target: {fileID: 2090252722609756580, guid: 6aa669eb1b55a234ebca432c724e40d4, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5357317222081465591, guid: 6aa669eb1b55a234ebca432c724e40d4, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
