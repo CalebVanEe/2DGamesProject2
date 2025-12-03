@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class FloorLevelScript : MonoBehaviour
 {
@@ -14,12 +16,16 @@ public class FloorLevelScript : MonoBehaviour
     public TMP_Text lyk;
     public TMP_InputField codeInput;
     public GameObject door;
+    public InputField cod;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+      
         door.GetComponent<Animator>().enabled = false;
+        //cod.enabled = false;
         lyk.enabled = false;
-        codeInput.enabled = false;
+   
         startTime = Time.time;
         lastLevelTime = PlayerPrefs.GetFloat("LevelTime");
         for (int i = 0; i < 4; i++)
@@ -33,7 +39,10 @@ public class FloorLevelScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(check == 4)
+        {
+            codeInput.enabled = true;
+        }
     }
     public void updateTimer()
     {
