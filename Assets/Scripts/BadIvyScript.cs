@@ -1,3 +1,5 @@
+using System;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -6,6 +8,7 @@ public class BadIvyScript : MonoBehaviour
     public LayerMask l;
     FloorLevelScript floorLevel;
     Animator animator;
+    public GameObject player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,17 +20,14 @@ public class BadIvyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 3f, l);
-        RaycastHit2D hit2 = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 3f, l);
-
-        if(hit || hit2)
+        float distance = (float) Math.Pow((player.transform.position.x - transform.position.x),2) + (float) Math.Pow((player.transform.position.y - transform.position.y), 2);
+        if(Math.Sqrt(distance) <= 1)
         {
-            animator.enabled = true;
+            floorLevel.badIvy(transform.position);
         }
-        floorLevel.badIvy(hit, hit2, gameObject.transform.position);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        floorLevel.hitBadIvy();
+        //floorLevel.hitBadIvy();
     }
 }

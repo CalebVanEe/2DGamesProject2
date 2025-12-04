@@ -59,19 +59,15 @@ public class FloorLevelScript : MonoBehaviour
             timerText.text = min.ToString() + ":" + sec.ToString();
         }
     }
-    public void badIvy(RaycastHit2D hit, RaycastHit2D hit2, Vector2 p)
+    public void badIvy(Vector2 p)
     {
-        if(hit|| hit2)
-        {
-           
-            Debug.Log("getting closer");
-         
+       
             warning.transform.position = p;
             warning.Play();
-        }
+       
     }
 
-    public void hitBadIvy()
+    public void hitMouse()
     {
         PlayerPrefs.SetFloat("LevelTime", totalTime);
 
@@ -94,16 +90,25 @@ public class FloorLevelScript : MonoBehaviour
         }
         else
         {
-            lyk.text = "The next letter of the code is: " + code[check].ToString();
+            lyk.text = "The next letter of the code is: " + code.Substring(0, check).ToString();
         }
         lyk.enabled = true;
         check++;
         g.GetComponent<Collider2D>().enabled = false;
+        Invoke("removeText", 2);
+    }
+    private void removeText()
+    {
+        lyk.enabled = false;
     }
 
     public void hitDoor()
     {
         codeInput.enabled = true;
+        if (check == 4)
+        {
+            endText();
+        }
         Debug.Log("Ouch");
 
     }
@@ -119,6 +124,12 @@ public class FloorLevelScript : MonoBehaviour
 
 
             //SceneManager.LoadScene("Level3-Daniel");
+        }
+        else
+        {
+            lyk.text = "Enter the correct code";
+            lyk.enabled = true;
+            Invoke("removeText", 2);
         }
     }
 }
