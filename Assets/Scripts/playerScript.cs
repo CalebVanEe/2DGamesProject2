@@ -383,10 +383,8 @@ public class playerScript : MonoBehaviour
     }
     void OnKnockout(InputValue button)
     {
-        Debug.Log("Knockout pressed");
         if (isCrouching || isSprinting)
         {
-            Debug.Log("Cannot knockout while crouching or sprinting");
             return;
         }
         if (button.isPressed)
@@ -394,12 +392,11 @@ public class playerScript : MonoBehaviour
             RaycastHit2D guardHit = Physics2D.Raycast(transform.position, facingRight ? Vector2.right : Vector2.left, 1f, guardLayer);
             if (guardHit.collider != null)
             {
-                Debug.Log("Guard hit for knockout");
                 PrisonGuardStickScript guard = guardHit.collider.GetComponent<PrisonGuardStickScript>();
                 if (guard != null)
                 {
-                    Debug.Log("Knocking out guard");
-                    guard.KnockedOut();
+                    if (!guard.getHunting()) 
+                        guard.KnockedOut();
                 }
             }
         }

@@ -122,6 +122,10 @@ public class PrisonGuardStickScript : MonoBehaviour
             Flip();
         }
     }
+    public bool getHunting()
+    {
+        return isHunting;
+    }
 
     private void HuntLogic()
     {
@@ -138,19 +142,40 @@ public class PrisonGuardStickScript : MonoBehaviour
             bool playerIsRight = xDiff > 0;
             if (playerIsRight != facingRight) Flip();
 
-            // Move towards player
+            // **Move towards player**
             Move(huntSpeed);
 
-            // Jump across gaps
             if (isGrounded && jumpCooldown <= 0)
             {
+                // 1. Check for wall ahead (to jump over an obstacle)
+                RaycastHit2D wallMiddle = Physics2D.Raycast(
+                    transform.position,
+                    facingRight ? Vector2.right : Vector2.left,
+                    wallCheckDistance,
+                    platformLayers
+                );
+                RaycastHit2D wallBottom = Physics2D.Raycast(
+                    new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z),
+                    facingRight ? Vector2.right : Vector2.left,
+                    wallCheckDistance,
+                    platformLayers
+                );
+                RaycastHit2D wallTop = Physics2D.Raycast(
+                    new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z),
+                    facingRight ? Vector2.right : Vector2.left,
+                    wallCheckDistance,
+                    platformLayers
+                );
+
+                // 2. Check for gap ahead (original logic to jump across a gap)
                 Vector2 edgeOrigin = new Vector2(
                     transform.position.x + (facingRight ? edgeCheckDistance : -edgeCheckDistance),
                     transform.position.y
                 );
                 RaycastHit2D groundAhead = Physics2D.Raycast(edgeOrigin, Vector2.down, 1f, platformLayers);
 
-                if (groundAhead.collider == null)
+                // **If wall OR gap is detected, jump**
+                if (wallMiddle.collider != null || wallBottom.collider != null || wallTop.collider != null || groundAhead.collider == null)
                 {
                     Jump();
                 }
@@ -159,6 +184,7 @@ public class PrisonGuardStickScript : MonoBehaviour
         // --- CASE 2: PLAYER IS ABOVE ---
         else if (yDiff > heightThreshold)
         {
+            // ... (Case 2 logic remains the same)
             // Face the player
             bool playerIsRight = xDiff > 0;
             if (playerIsRight != facingRight) Flip();
@@ -215,6 +241,7 @@ public class PrisonGuardStickScript : MonoBehaviour
         // --- CASE 3: PLAYER IS BELOW ---
         else // yDiff < -heightThreshold
         {
+            // ... (Case 3 logic remains the same)
             if (isGrounded)
             {
                 int directionToEdge = FindNearestDropEdge();
@@ -380,6 +407,10 @@ public class PrisonGuardStickScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && _sceneManager != null)
         {
             _sceneManager.PlayerHit();
+        }
+        else if (collision.gameObject.CompareTag("Crate") && !isHunting)
+        {
+            KnockedOut();
         }
     }
 
