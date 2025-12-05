@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Scene1KeyScript : MonoBehaviour
+public class DoorScript : MonoBehaviour
 {
     private LevelSceneManagerScript levelSceneManagerScript;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -18,8 +18,7 @@ public class Scene1KeyScript : MonoBehaviour
     {
         if (collision.gameObject.name == "Player")
         {
-            levelSceneManagerScript.KeyCollected();
-            Destroy(gameObject);
+            levelSceneManagerScript.LevelCompleted();
         }
     }
 }

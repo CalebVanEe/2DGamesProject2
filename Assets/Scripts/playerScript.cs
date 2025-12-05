@@ -44,15 +44,18 @@ public class playerScript : MonoBehaviour
     private bool isJumping;
     private float moveDirection = 0;
     private LayerMask groundLayers;
+    private LayerMask guardLayer;
     private Rigidbody2D rbody;
     private Animator animator;
     private BoxCollider2D boxCollider;
     private SpriteRenderer spriteRenderer;
+    private bool facingRight = true;
 
     void Start()
     {
         rbody = GetComponent<Rigidbody2D>();
         groundLayers = LayerMask.GetMask("Platform", "Solid Platform");
+        guardLayer = LayerMask.GetMask("Guard");
         boxCollider = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -87,10 +90,12 @@ public class playerScript : MonoBehaviour
         if (rbody.linearVelocityX < -0.05f)
         {
             spriteRenderer.flipX = true;
+            facingRight = false;
         }
         else if (rbody.linearVelocityX > 0.05f)
         {
             spriteRenderer.flipX = false;
+            facingRight = true;
         }
 
         // Set last grounded for jumping timings
@@ -373,6 +378,29 @@ public class playerScript : MonoBehaviour
             else
             {
                 tryStandUp = true;
+            }
+        }
+    }
+    void OnKnockout(InputValue button)
+    {
+        Debug.Log("Knockout pressed");
+        if (isCrouching || isSprinting)
+        {
+            Debug.Log("Cannot knockout while crouching or sprinting");
+            return;
+        }
+        if (button.isPressed)
+        {
+            RaycastHit2D guardHit = Physics2D.Raycast(transform.position, facingRight ? Vector2.right : Vector2.left, 1f, guardLayer);
+            if (guardHit.collider != null)
+            {
+                Debug.Log("Guard hit for knockout");
+                PrisonGuardStickScript guard = guardHit.collider.GetComponent<PrisonGuardStickScript>();
+                if (guard != null)
+                {
+                    Debug.Log("Knocking out guard");
+                    guard.KnockedOut();
+                }
             }
         }
     }
