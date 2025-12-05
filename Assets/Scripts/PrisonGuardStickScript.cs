@@ -14,7 +14,7 @@ public class PrisonGuardStickScript : MonoBehaviour
     public float patrolSpeed = 2f;
     public float huntSpeed = 4f;
     public float jumpPower = 12f;
-    public float wallCheckDistance = 0.8f; // Now only used as a reference/ignored in PatrolLogic
+    public float wallCheckDistance = 0.8f;
     public float edgeCheckDistance = 0.8f;
     public float heightThreshold = 1.0f;
 
@@ -30,11 +30,10 @@ public class PrisonGuardStickScript : MonoBehaviour
     private bool facingRight;
     private bool isHunting;
     private bool isGrounded;
-    private bool wallAhead; // <-- NEW: Flag to track if the Move function hit a wall
+    private bool wallAhead;
 
-    // --- NEW VARIABLES ---
     private float jumpCooldown = 0f;
-    private float dropCommitTimer = 0f; // Forces guard to commit to a fall
+    private float dropCommitTimer = 0f;
 
     void Start()
     {
@@ -57,7 +56,7 @@ public class PrisonGuardStickScript : MonoBehaviour
     void Update()
     {
         if (jumpCooldown > 0) jumpCooldown -= Time.deltaTime;
-        if (dropCommitTimer > 0) dropCommitTimer -= Time.deltaTime; // Count down the commit timer
+        if (dropCommitTimer > 0) dropCommitTimer -= Time.deltaTime;
 
         CheckGrounded();
         ScanForPlayer();
@@ -110,9 +109,7 @@ public class PrisonGuardStickScript : MonoBehaviour
 
     private void PatrolLogic()
     {
-        Move(patrolSpeed); // This call sets the 'wallAhead' flag
-
-        // Original wall check is removed here, relying on the flag set by Move()
+        Move(patrolSpeed);
 
         Vector2 edgeCheckOrigin = new Vector2(
             transform.position.x + (facingRight ? edgeCheckDistance : -edgeCheckDistance),
@@ -120,7 +117,6 @@ public class PrisonGuardStickScript : MonoBehaviour
         );
         RaycastHit2D edgeHit = Physics2D.Raycast(edgeCheckOrigin, Vector2.down, 1f, platformLayers);
 
-        // Check if wallAhead is TRUE (set by Move()), OR if there is an edge
         if (wallAhead || edgeHit.collider == null)
         {
             Flip();
@@ -135,54 +131,90 @@ public class PrisonGuardStickScript : MonoBehaviour
         float yDiff = _playerTransform.position.y - transform.position.y;
         bool tightlyAligned = Mathf.Abs(xDiff) < 0.2f;
 
-        // Check for an obstacle directly above the guard
-        RaycastHit2D ceilingObstacle = Physics2D.Raycast(transform.position, Vector2.up, 2.5f, platformLayers);
-        bool jumpIsBlocked = ceilingObstacle.collider != null;
-
-        // --- STATE 1: Player is ABOVE or SAME HEIGHT ---
-        if (yDiff > -heightThreshold)
+        // --- CASE 1: SAME HEIGHT (within threshold range) ---
+        if (Mathf.Abs(yDiff) <= heightThreshold)
         {
-            // **PRIMARY FIX FOR FLIPPING/STUCKING:**
-            // If we are tightly aligned, the player is significantly above us (implying a platform separation),
-            // AND a jump is blocked or we're just not high enough to warrant a jump yet,
-            // we must break the vertical alignment by changing direction.
-
+            // Face the player
             bool playerIsRight = xDiff > 0;
+            if (playerIsRight != facingRight) Flip();
 
-            // Only flip to follow the player's X position if we are NOT tightly aligned.
-            // The check above handles the tightlyAligned case when we are stuck.
-            if (!tightlyAligned && playerIsRight != facingRight) Flip();
+            // Move towards player
+            Move(huntSpeed);
 
+            // Jump across gaps
+            if (isGrounded && jumpCooldown <= 0)
+            {
+                Vector2 edgeOrigin = new Vector2(
+                    transform.position.x + (facingRight ? edgeCheckDistance : -edgeCheckDistance),
+                    transform.position.y
+                );
+                RaycastHit2D groundAhead = Physics2D.Raycast(edgeOrigin, Vector2.down, 1f, platformLayers);
+
+                if (groundAhead.collider == null)
+                {
+                    Jump();
+                }
+            }
+        }
+        // --- CASE 2: PLAYER IS ABOVE ---
+        else if (yDiff > heightThreshold)
+        {
+            // Face the player
+            bool playerIsRight = xDiff > 0;
+            if (playerIsRight != facingRight) Flip();
+
+            // Move towards player
             Move(huntSpeed);
 
             if (isGrounded && jumpCooldown <= 0)
             {
-                RaycastHit2D wallHit = Physics2D.Raycast(transform.position, facingRight ? Vector2.right : Vector2.left, wallCheckDistance, platformLayers);
-                Vector2 edgeOrigin = new Vector2(transform.position.x + (facingRight ? edgeCheckDistance : -edgeCheckDistance), transform.position.y);
+                // Check for wall ahead
+                RaycastHit2D wallHit = Physics2D.Raycast(
+                    transform.position,
+                    facingRight ? Vector2.right : Vector2.left,
+                    wallCheckDistance,
+                    platformLayers
+                );
+
+                // Check for gap ahead
+                Vector2 edgeOrigin = new Vector2(
+                    transform.position.x + (facingRight ? edgeCheckDistance : -edgeCheckDistance),
+                    transform.position.y
+                );
                 RaycastHit2D groundAhead = Physics2D.Raycast(edgeOrigin, Vector2.down, 1f, platformLayers);
 
-                // Condition 1: Jump to bypass a wall or a gap (normal pathfinding)
+                // If wall or gap detected, jump
                 if (wallHit.collider != null || groundAhead.collider == null)
                 {
-                    // If we are stuck right under the player with a block overhead, 
-                    // the logic above should have flipped us already. Now we just jump normally 
-                    // to progress if the path is blocked by a wall or edge (not the player being directly above).
                     Jump();
                 }
-                // Condition 2: Jump when tightly aligned beneath player, but only if the jump isn't blocked.
-                else if (yDiff > heightThreshold * 1.5f && tightlyAligned)
+                // Special case: Guard is directly under player
+                else if (tightlyAligned)
                 {
-                    if (!jumpIsBlocked)
+                    // Raycast upward to check for platform above
+                    RaycastHit2D platformAbove = Physics2D.Raycast(
+                        transform.position,
+                        Vector2.up,
+                        yDiff + 1f, // Check up to player height + buffer
+                        platformLayers
+                    );
+
+                    if (platformAbove.collider != null)
                     {
+                        // Platform blocks the way - cancel hunt
+                        isHunting = false;
+                    }
+                    else
+                    {
+                        // No platform blocking - jump up
                         Jump();
                     }
                 }
             }
         }
-        // --- STATE 2: Player is BELOW ---
-        else
+        // --- CASE 3: PLAYER IS BELOW ---
+        else // yDiff < -heightThreshold
         {
-            // ... State 2 code remains unchanged ...
             if (isGrounded)
             {
                 int directionToEdge = FindNearestDropEdge();
@@ -204,7 +236,7 @@ public class PrisonGuardStickScript : MonoBehaviour
             }
             else
             {
-                // --- AIR CONTROL ---
+                // Air control while falling
                 if (dropCommitTimer <= 0)
                 {
                     bool playerIsRight = xDiff > 0;
@@ -221,31 +253,67 @@ public class PrisonGuardStickScript : MonoBehaviour
 
     private int FindNearestDropEdge()
     {
+        if (_playerTransform == null) return 0;
+
         float scanStep = 0.5f;
         float maxScanDist = 8f;
         Vector2 origin = transform.position;
 
-        // Scan Right
-        // OPTIMIZATION: Start scanning closer (0.2f) so we detect the edge when we are standing right on it
+        float rightEdgeDistance = float.MaxValue;
+        float leftEdgeDistance = float.MaxValue;
+        bool foundRightEdge = false;
+        bool foundLeftEdge = false;
+
+        // Scan Right to find edge
         for (float i = 0.2f; i < maxScanDist; i += scanStep)
         {
             Vector2 checkPos = origin + (Vector2.right * i);
             RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, 1f, platformLayers);
-            if (hit.collider == null) return 1;
 
+            if (hit.collider == null)
+            {
+                // Found edge - calculate distance to player from this edge position
+                rightEdgeDistance = Vector2.Distance(checkPos, _playerTransform.position);
+                foundRightEdge = true;
+                break;
+            }
+
+            // Check if wall blocks further scanning
             RaycastHit2D wallHit = Physics2D.Raycast(origin + (Vector2.right * (i - 0.1f)), Vector2.right, 0.1f, platformLayers);
             if (wallHit.collider != null) break;
         }
 
-        // Scan Left
+        // Scan Left to find edge
         for (float i = 0.2f; i < maxScanDist; i += scanStep)
         {
             Vector2 checkPos = origin + (Vector2.left * i);
             RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, 1f, platformLayers);
-            if (hit.collider == null) return -1;
 
+            if (hit.collider == null)
+            {
+                // Found edge - calculate distance to player from this edge position
+                leftEdgeDistance = Vector2.Distance(checkPos, _playerTransform.position);
+                foundLeftEdge = true;
+                break;
+            }
+
+            // Check if wall blocks further scanning
             RaycastHit2D wallHit = Physics2D.Raycast(origin + (Vector2.left * (i - 0.1f)), Vector2.left, 0.1f, platformLayers);
             if (wallHit.collider != null) break;
+        }
+
+        // Return direction to nearest edge, or 0 if no edges found
+        if (foundRightEdge && foundLeftEdge)
+        {
+            return rightEdgeDistance < leftEdgeDistance ? 1 : -1;
+        }
+        else if (foundRightEdge)
+        {
+            return 1;
+        }
+        else if (foundLeftEdge)
+        {
+            return -1;
         }
 
         return 0;
@@ -254,7 +322,7 @@ public class PrisonGuardStickScript : MonoBehaviour
     private void Move(float speed)
     {
         BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
-        wallAhead = false; // <-- RESET FLAG HERE
+        wallAhead = false;
 
         if (boxCollider != null)
         {
@@ -282,7 +350,6 @@ public class PrisonGuardStickScript : MonoBehaviour
             Vector2 targetVelocity = new Vector2((facingRight ? 1 : -1) * speed, _rbody.linearVelocity.y);
             _rbody.linearVelocity = targetVelocity;
         }
-        // Fallback block remains unchanged for safety
         else
         {
             Vector2 targetVelocity = new Vector2((facingRight ? 1 : -1) * speed, _rbody.linearVelocity.y);
@@ -292,7 +359,8 @@ public class PrisonGuardStickScript : MonoBehaviour
 
     private void Jump()
     {
-        _rbody.linearVelocity = new Vector2(_rbody.linearVelocity.x, jumpPower);
+        float horizontalBoost = (facingRight ? 1 : -1) * (isHunting ? huntSpeed : patrolSpeed);
+        _rbody.linearVelocity = new Vector2(horizontalBoost, jumpPower);
         jumpCooldown = 0.5f;
     }
 
@@ -320,7 +388,8 @@ public class PrisonGuardStickScript : MonoBehaviour
         if (knockedOutSprite != null)
         {
             AudioSource.PlayClipAtPoint(knockOutSound, transform.position);
-            Instantiate(knockedOutSprite, new Vector3(transform.position.x, transform.position.y - 0.45f, transform.position.z), transform.rotation);
+            GameObject deadBody = Instantiate(knockedOutSprite, new Vector3(transform.position.x, transform.position.y - 0.45f, transform.position.z), transform.rotation);
+            deadBody.GetComponent<SpriteRenderer>().flipX = _spriteRenderer.flipX;
         }
         Destroy(gameObject);
     }
