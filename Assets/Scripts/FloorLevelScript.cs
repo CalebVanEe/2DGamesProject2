@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -21,7 +22,7 @@ public class FloorLevelScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-      
+        door.GetComponent<Collider2D>().enabled = true;
         door.GetComponent<Animator>().enabled = false;
         //cod.enabled = false;
         lyk.enabled = false;
@@ -39,9 +40,11 @@ public class FloorLevelScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(check == 4)
+        if (codeInput.text.Equals(code))
         {
-            codeInput.enabled = true;
+            lyk.text = "That is the correct code! Exit through the door!";
+            lyk.enabled = true;
+            Invoke("removeText", 2);
         }
     }
     public void updateTimer()
@@ -71,26 +74,26 @@ public class FloorLevelScript : MonoBehaviour
     {
         PlayerPrefs.SetFloat("LevelTime", totalTime);
 
-        int previousLives = PlayerPrefs.GetInt("Lives");
-        if (previousLives <= 1)
-        {
-            SceneManager.LoadScene("GameOverScene");
-        }
-        else
-        {
+        //int previousLives = PlayerPrefs.GetInt("Lives");
+        //if (previousLives <= 1)
+        //{
+        //    SceneManager.LoadScene("GameOverScene");
+        //}
+        //else
+        //{
 
-            PlayerPrefs.SetInt("Lives", (previousLives - 1));
-            SceneManager.LoadScene("DeathScene");
-        }
+        //    PlayerPrefs.SetInt("Lives", (previousLives - 1));
+        //    SceneManager.LoadScene("DeathScene");
+        //}
     }
     public void hitGoodIvy(GameObject g)
     {
         if (check == 0) {
-            lyk.text = "The first letter of the code is: " + code[check].ToString();
+            lyk.text = "The first number of the code is: " + code[check].ToString();
         }
         else
         {
-            lyk.text = "The next letter of the code is: " + code.Substring(0, check).ToString();
+            lyk.text = "The fragments of code found: " + code.Substring(0, check + 1).ToString();
         }
         lyk.enabled = true;
         check++;
@@ -103,22 +106,9 @@ public class FloorLevelScript : MonoBehaviour
     }
 
     public void hitDoor()
-    {
-        codeInput.enabled = true;
-        if (check == 4)
-        {
-            endText();
-        }
-        Debug.Log("Ouch");
-
-    }
-
-    public void endText()
-    {
-        Debug.Log(code);
+    { 
         if (codeInput.text.Equals(code))
         {
-            Debug.Log("The correct Code");
             door.GetComponent<Collider2D>().enabled = false;
             door.GetComponent<Animator>().enabled = true;
 

@@ -12,50 +12,69 @@ public class mouseScript : MonoBehaviour
     Vector3 wayToMove;
     Rigidbody2D r;
     FloorLevelScript floorLevelScript;
+    float lastTimeBlocked;
+    bool blocked;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         wayToMove = Vector3.right * speed;
         r = GetComponent<Rigidbody2D>();
         floorLevelScript = FindAnyObjectByType<FloorLevelScript>();
+        lastTimeBlocked = Time.time;
+        blocked = false;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //float step = speed * Time.deltaTime;
-        //// calculate distance to move
-        //if(Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, .5f, targetLayer))
-        //{
-        //    target = target1;
-        //}
-        //if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, .5f, targetLayer))
-        //{
-        //    target = target2;
-        //}
-        //transform.position = Vector3.MoveTowards(transform.position, target.transform.position, step);
+        if(blocked && (Time.time - lastTimeBlocked > 2f))
+        {
+            blocked = false;
+        }
 
-       
-        float step = speed * Time.deltaTime;
-        if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 4f, targetLayer))
-        {
-                wayToMove = Vector3.left * speed;
-        }
-        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 4f, targetLayer))
-        {
-                wayToMove = Vector3.right * speed;
+        //float step = speed * Time.deltaTime;
         
-        }
         // calculate distance to move
-        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, .5f, platformLayer))
+        if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, .5f, platformLayer))
         {
             wayToMove = Vector3.right * speed;
+            Debug.Log("see a wall");
         }
         else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, .5f, platformLayer))
         {
+            Debug.Log("see a wall");
             wayToMove = Vector3.left * speed;
         }
-    
+        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 4f, targetLayer))
+        {
+            //if (r.linearVelocityX > 0)
+            //{
+                wayToMove = Vector2.left * speed;
+            //}
+            //else
+            //{
+            //    blocked = true;
+            //    lastTimeBlocked = Time.time;
+            //    wayToMove = Vector2.right * speed;
+            //}
+
+            Debug.Log("see a man");
+        }
+        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 4f, targetLayer))
+        {
+            //if (r.linearVelocityX > 0)
+            //{
+                wayToMove = Vector2.right * speed;
+            //}
+            //else
+            //{
+            //    blocked = true;
+            //    lastTimeBlocked = Time.time;
+            //    wayToMove = Vector2.left * speed;
+            //}
+            Debug.Log("see a man");
+        }
         r.linearVelocity = wayToMove;
     }
     private void OnCollisionEnter2D(Collision2D collision)
