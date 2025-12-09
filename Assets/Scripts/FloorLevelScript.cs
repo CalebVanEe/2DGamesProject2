@@ -36,6 +36,7 @@ public class FloorLevelScript : MonoBehaviour
         }
         
     }
+    
 
     // Update is called once per frame
     void Update()
@@ -46,6 +47,12 @@ public class FloorLevelScript : MonoBehaviour
             lyk.enabled = true;
             Invoke("removeText", 2);
         }
+    }
+
+    public void OnClick()
+    {
+        SceneManager.LoadScene("PauseScene");
+        PlayerPrefs.SetFloat("LevelTime", totalTime);
     }
     public void updateTimer()
     {
