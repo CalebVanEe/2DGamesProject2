@@ -4,23 +4,27 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class PrisonGuardStickScript : MonoBehaviour
 {
-    [Header("Targeting")]
+    // Parameters
     public LayerMask targetLayers;
     public LayerMask platformLayers;
-    public float eyeDistance = 5f;
-    public float huntDistance = 10f;
-
-    [Header("Movement")]
-    public float patrolSpeed = 2f;
-    public float huntSpeed = 4f;
-    public float jumpPower = 12f;
-    public float wallCheckDistance = 0.8f;
-    public float edgeCheckDistance = 0.8f;
-    public float heightThreshold = 1.0f;
-
-    [Header("Visuals & Audio")]
     public GameObject knockedOutSprite;
     public AudioClip knockOutSound;
+
+    private float eyeDistance = 5f;
+    private float huntDistance = 15f;
+    private float patrolSpeed = 2f;
+    private float huntSpeed = 4f;
+
+    private float highJumpPower = 15f;
+    private float longJumpHorizontalBoost = 11f;
+    private float jumpPower;
+
+    // NEW: Multiplier for jumping when player is above
+    public float verticalJumpMultiplier = 1.5f;
+
+    private float wallCheckDistance = 0.8f;
+    private float edgeCheckDistance = 0.8f;
+    private float heightThreshold = 4.0f;
 
     private Rigidbody2D _rbody;
     private LevelSceneManagerScript _sceneManager;
@@ -31,6 +35,7 @@ public class PrisonGuardStickScript : MonoBehaviour
     private bool isHunting;
     private bool isGrounded;
     private bool wallAhead;
+    private bool isLongJumping;
 
     private float jumpCooldown = 0f;
     private float dropCommitTimer = 0f;
@@ -39,6 +44,7 @@ public class PrisonGuardStickScript : MonoBehaviour
     {
         _rbody = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        jumpPower = highJumpPower;
 
         GameObject managerObj = GameObject.Find("LevelSceneManager");
         if (managerObj != null)
@@ -64,6 +70,25 @@ public class PrisonGuardStickScript : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Apply high horizontal speed during a long jump
+        if (isLongJumping && !isGrounded)
+        {
+            float airSpeedMultiplier = 3.0f;
+            float targetAirSpeed = huntSpeed * airSpeedMultiplier;
+            float newVelocityX = (facingRight ? 1 : -1) * targetAirSpeed;
+
+            // Only apply the boost if the current speed is less than the target speed
+            float currentVelX = _rbody.linearVelocity.x;
+            if (facingRight && currentVelX < newVelocityX || !facingRight && currentVelX > newVelocityX)
+            {
+                _rbody.linearVelocity = new Vector2(newVelocityX, _rbody.linearVelocity.y);
+            }
+        }
+        else if (isLongJumping && isGrounded)
+        {
+            isLongJumping = false;
+        }
+
         if (isHunting && _playerTransform != null)
         {
             HuntLogic();
@@ -138,45 +163,35 @@ public class PrisonGuardStickScript : MonoBehaviour
         // --- CASE 1: SAME HEIGHT (within threshold range) ---
         if (Mathf.Abs(yDiff) <= heightThreshold)
         {
-            // Face the player
             bool playerIsRight = xDiff > 0;
             if (playerIsRight != facingRight) Flip();
 
-            // **Move towards player**
             Move(huntSpeed);
 
             if (isGrounded && jumpCooldown <= 0)
             {
-                // 1. Check for wall ahead (to jump over an obstacle)
-                RaycastHit2D wallMiddle = Physics2D.Raycast(
-                    transform.position,
-                    facingRight ? Vector2.right : Vector2.left,
-                    wallCheckDistance,
-                    platformLayers
-                );
-                RaycastHit2D wallBottom = Physics2D.Raycast(
-                    new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z),
-                    facingRight ? Vector2.right : Vector2.left,
-                    wallCheckDistance,
-                    platformLayers
-                );
-                RaycastHit2D wallTop = Physics2D.Raycast(
-                    new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z),
-                    facingRight ? Vector2.right : Vector2.left,
-                    wallCheckDistance,
-                    platformLayers
-                );
+                // Wall Checks
+                RaycastHit2D wallMiddle = Physics2D.Raycast(transform.position, facingRight ? Vector2.right : Vector2.left, wallCheckDistance, platformLayers);
+                RaycastHit2D wallBottom = Physics2D.Raycast(new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z), facingRight ? Vector2.right : Vector2.left, wallCheckDistance, platformLayers);
+                RaycastHit2D wallTop = Physics2D.Raycast(new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), facingRight ? Vector2.right : Vector2.left, wallCheckDistance, platformLayers);
 
-                // 2. Check for gap ahead (original logic to jump across a gap)
-                Vector2 edgeOrigin = new Vector2(
-                    transform.position.x + (facingRight ? edgeCheckDistance : -edgeCheckDistance),
-                    transform.position.y
-                );
+                // Gap Check
+                Vector2 edgeOrigin = new Vector2(transform.position.x + (facingRight ? edgeCheckDistance : -edgeCheckDistance), transform.position.y);
                 RaycastHit2D groundAhead = Physics2D.Raycast(edgeOrigin, Vector2.down, 1f, platformLayers);
 
-                // **If wall OR gap is detected, jump**
-                if (wallMiddle.collider != null || wallBottom.collider != null || wallTop.collider != null || groundAhead.collider == null)
+                bool isWallAhead = wallMiddle.collider != null || wallBottom.collider != null || wallTop.collider != null;
+                bool isGapAhead = groundAhead.collider == null;
+
+                if (isWallAhead)
                 {
+                    jumpPower = highJumpPower;
+                    isLongJumping = false;
+                    Jump();
+                }
+                else if (isGapAhead)
+                {
+                    jumpPower = highJumpPower / 1.5f;
+                    isLongJumping = true;
                     Jump();
                 }
             }
@@ -184,55 +199,37 @@ public class PrisonGuardStickScript : MonoBehaviour
         // --- CASE 2: PLAYER IS ABOVE ---
         else if (yDiff > heightThreshold)
         {
-            // ... (Case 2 logic remains the same)
-            // Face the player
             bool playerIsRight = xDiff > 0;
             if (playerIsRight != facingRight) Flip();
 
-            // Move towards player
             Move(huntSpeed);
 
             if (isGrounded && jumpCooldown <= 0)
             {
-                // Check for wall ahead
-                RaycastHit2D wallHit = Physics2D.Raycast(
-                    transform.position,
-                    facingRight ? Vector2.right : Vector2.left,
-                    wallCheckDistance,
-                    platformLayers
-                );
-
-                // Check for gap ahead
-                Vector2 edgeOrigin = new Vector2(
-                    transform.position.x + (facingRight ? edgeCheckDistance : -edgeCheckDistance),
-                    transform.position.y
-                );
+                RaycastHit2D wallHit = Physics2D.Raycast(transform.position, facingRight ? Vector2.right : Vector2.left, wallCheckDistance, platformLayers);
+                Vector2 edgeOrigin = new Vector2(transform.position.x + (facingRight ? edgeCheckDistance : -edgeCheckDistance), transform.position.y);
                 RaycastHit2D groundAhead = Physics2D.Raycast(edgeOrigin, Vector2.down, 1f, platformLayers);
 
-                // If wall or gap detected, jump
                 if (wallHit.collider != null || groundAhead.collider == null)
                 {
+                    // NEW: Apply multiplier when jumping up towards player
+                    jumpPower = highJumpPower * verticalJumpMultiplier;
+                    isLongJumping = false;
                     Jump();
                 }
-                // Special case: Guard is directly under player
                 else if (tightlyAligned)
                 {
-                    // Raycast upward to check for platform above
-                    RaycastHit2D platformAbove = Physics2D.Raycast(
-                        transform.position,
-                        Vector2.up,
-                        yDiff + 1f, // Check up to player height + buffer
-                        platformLayers
-                    );
+                    RaycastHit2D platformAbove = Physics2D.Raycast(transform.position, Vector2.up, yDiff + 1f, platformLayers);
 
                     if (platformAbove.collider != null)
                     {
-                        // Platform blocks the way - cancel hunt
                         isHunting = false;
                     }
                     else
                     {
-                        // No platform blocking - jump up
+                        // NEW: Apply multiplier when jumping up towards player
+                        jumpPower = highJumpPower * verticalJumpMultiplier;
+                        isLongJumping = false;
                         Jump();
                     }
                 }
@@ -241,7 +238,6 @@ public class PrisonGuardStickScript : MonoBehaviour
         // --- CASE 3: PLAYER IS BELOW ---
         else // yDiff < -heightThreshold
         {
-            // ... (Case 3 logic remains the same)
             if (isGrounded)
             {
                 int directionToEdge = FindNearestDropEdge();
@@ -259,6 +255,25 @@ public class PrisonGuardStickScript : MonoBehaviour
                     bool playerIsRight = xDiff > 0;
                     if (!tightlyAligned && playerIsRight != facingRight) Flip();
                     Move(huntSpeed);
+                }
+
+                // NEW: Logic to jump over obstacles while pursuing player downwards
+                if (jumpCooldown <= 0)
+                {
+                    RaycastHit2D wallHit = Physics2D.Raycast(
+                        transform.position,
+                        facingRight ? Vector2.right : Vector2.left,
+                        wallCheckDistance,
+                        platformLayers
+                    );
+
+                    if (wallHit.collider != null)
+                    {
+                        // Use standard high jump for obstacles when going down
+                        jumpPower = highJumpPower;
+                        isLongJumping = false;
+                        Jump();
+                    }
                 }
             }
             else
@@ -291,7 +306,7 @@ public class PrisonGuardStickScript : MonoBehaviour
         bool foundRightEdge = false;
         bool foundLeftEdge = false;
 
-        // Scan Right to find edge
+        // Scan Right
         for (float i = 0.2f; i < maxScanDist; i += scanStep)
         {
             Vector2 checkPos = origin + (Vector2.right * i);
@@ -299,18 +314,16 @@ public class PrisonGuardStickScript : MonoBehaviour
 
             if (hit.collider == null)
             {
-                // Found edge - calculate distance to player from this edge position
                 rightEdgeDistance = Vector2.Distance(checkPos, _playerTransform.position);
                 foundRightEdge = true;
                 break;
             }
 
-            // Check if wall blocks further scanning
             RaycastHit2D wallHit = Physics2D.Raycast(origin + (Vector2.right * (i - 0.1f)), Vector2.right, 0.1f, platformLayers);
             if (wallHit.collider != null) break;
         }
 
-        // Scan Left to find edge
+        // Scan Left
         for (float i = 0.2f; i < maxScanDist; i += scanStep)
         {
             Vector2 checkPos = origin + (Vector2.left * i);
@@ -318,30 +331,21 @@ public class PrisonGuardStickScript : MonoBehaviour
 
             if (hit.collider == null)
             {
-                // Found edge - calculate distance to player from this edge position
                 leftEdgeDistance = Vector2.Distance(checkPos, _playerTransform.position);
                 foundLeftEdge = true;
                 break;
             }
 
-            // Check if wall blocks further scanning
             RaycastHit2D wallHit = Physics2D.Raycast(origin + (Vector2.left * (i - 0.1f)), Vector2.left, 0.1f, platformLayers);
             if (wallHit.collider != null) break;
         }
 
-        // Return direction to nearest edge, or 0 if no edges found
         if (foundRightEdge && foundLeftEdge)
         {
             return rightEdgeDistance < leftEdgeDistance ? 1 : -1;
         }
-        else if (foundRightEdge)
-        {
-            return 1;
-        }
-        else if (foundLeftEdge)
-        {
-            return -1;
-        }
+        else if (foundRightEdge) return 1;
+        else if (foundLeftEdge) return -1;
 
         return 0;
     }
@@ -362,14 +366,7 @@ public class PrisonGuardStickScript : MonoBehaviour
                 bounds.center.y
             );
 
-            RaycastHit2D wallCheck = Physics2D.BoxCast(
-                boxCenter,
-                boxSize,
-                0f,
-                checkDirection,
-                0.1f,
-                platformLayers
-            );
+            RaycastHit2D wallCheck = Physics2D.BoxCast(boxCenter, boxSize, 0f, checkDirection, 0.1f, platformLayers);
             if (wallCheck.collider != null)
             {
                 wallAhead = true;
@@ -386,8 +383,15 @@ public class PrisonGuardStickScript : MonoBehaviour
 
     private void Jump()
     {
-        float horizontalBoost = (facingRight ? 1 : -1) * (isHunting ? huntSpeed : patrolSpeed);
-        _rbody.linearVelocity = new Vector2(horizontalBoost, jumpPower);
+        float baseSpeed = isHunting ? huntSpeed : patrolSpeed;
+        float horizontalVelocity = (facingRight ? 1 : -1) * baseSpeed;
+
+        if (isLongJumping)
+        {
+            horizontalVelocity += (facingRight ? 1 : -1) * longJumpHorizontalBoost;
+        }
+
+        _rbody.linearVelocity = new Vector2(horizontalVelocity, jumpPower);
         jumpCooldown = 0.5f;
     }
 
@@ -416,12 +420,17 @@ public class PrisonGuardStickScript : MonoBehaviour
 
     public void KnockedOut()
     {
-        if (knockedOutSprite != null)
+        if (knockOutSound != null)
         {
             AudioSource.PlayClipAtPoint(knockOutSound, transform.position);
+        }
+
+        if (knockedOutSprite != null)
+        {
             GameObject deadBody = Instantiate(knockedOutSprite, new Vector3(transform.position.x, transform.position.y - 0.45f, transform.position.z), transform.rotation);
             deadBody.GetComponent<SpriteRenderer>().flipX = _spriteRenderer.flipX;
         }
+
         Destroy(gameObject);
     }
 }

@@ -84,8 +84,8 @@ public class LevelSceneManagerScript : MonoBehaviour
         PlayerPrefs.SetFloat("LevelTime", totalTime);
         if (level == 1)
             SceneManager.LoadScene("Level2LoadingScreen");
-        if (level == 2)
-            SceneManager.LoadScene("Level3LoadingScreen");
+        if (level == 3)
+            SceneManager.LoadScene("Level4LoadingScreen");
     }
     public void KeyCollected()
     {
