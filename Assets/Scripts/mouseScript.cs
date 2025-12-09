@@ -33,24 +33,12 @@ public class mouseScript : MonoBehaviour
             blocked = false;
         }
 
-        //float step = speed * Time.deltaTime;
-        
-        // calculate distance to move
-        if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, .5f, platformLayer))
-        {
-            wayToMove = Vector3.right * speed;
-            Debug.Log("see a wall");
-        }
-        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, .5f, platformLayer))
-        {
-            Debug.Log("see a wall");
-            wayToMove = Vector3.left * speed;
-        }
-        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 4f, targetLayer))
+        if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 4f, targetLayer))
         {
             //if (r.linearVelocityX > 0)
             //{
-                wayToMove = Vector2.left * speed;
+            wayToMove = Vector2.left * speed;
+            blocked = true;
             //}
             //else
             //{
@@ -65,7 +53,8 @@ public class mouseScript : MonoBehaviour
         {
             //if (r.linearVelocityX > 0)
             //{
-                wayToMove = Vector2.right * speed;
+            wayToMove = Vector2.right * speed;
+            blocked = true;
             //}
             //else
             //{
@@ -75,7 +64,21 @@ public class mouseScript : MonoBehaviour
             //}
             Debug.Log("see a man");
         }
+        // calculate distance to move
+        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, .5f, platformLayer) && !blocked)
+        {
+            wayToMove = Vector3.right * speed;
+            Debug.Log("see a wall");
+            blocked = true;
+        }
+        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, .5f, platformLayer) && !blocked)
+        {
+            Debug.Log("see a wall");
+            wayToMove = Vector3.left * speed;
+        }
+        
         r.linearVelocity = wayToMove;
+        blocked = false;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
