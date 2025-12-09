@@ -15,19 +15,37 @@ EditorBuildSettings:
     path: Assets/Scenes/Level1LoadingScreen.unity
     guid: c589cc0345a32444ea8d5fa90a6064d3
   - enabled: 1
-    path: Assets/Scenes/Level1-Caleb.unity
+    path: Assets/Scenes/Level1-TortureChamber.unity
     guid: c12e764f818eba14f99396342dc8683f
   - enabled: 1
     path: Assets/Scenes/Level2LoadingScreen.unity
     guid: 268dbe0e93e0a9b42b17389480daf1bc
   - enabled: 1
-    path: Assets/Scenes/Level2-Jacqueline.unity
-    guid: a11f0dd32617f1747a85fafad8bd24ac
+    path: Assets/Scenes/Level2-SecurityDoor.unity
+    guid: e9de1adb07e4fb74e9370a46bcab6fe4
   - enabled: 1
     path: Assets/Scenes/Level3LoadingScreen.unity
     guid: f1096a8452736dd46a5962712126ccb7
   - enabled: 1
-    path: Assets/Scenes/Level3-Daniel.unity
+    path: Assets/Scenes/Level3-CellBlock.unity
+    guid: a844ae9ba0f7fe049b1fab2230c6c3eb
+  - enabled: 1
+    path: Assets/Scenes/Level4LoadingScreen.unity
+    guid: f5fca7df5ea1b734fa524434b00a5f28
+  - enabled: 1
+    path: Assets/Scenes/Level4-WardenOffice.unity
+    guid: a11f0dd32617f1747a85fafad8bd24ac
+  - enabled: 1
+    path: Assets/Scenes/Level5LoadingScreen.unity
+    guid: 295470ab54e8bfe41a26ae4d1261703a
+  - enabled: 1
+    path: Assets/Scenes/Level5-Armory.unity
+    guid: 4d22c522c1245ec4595687af2f4373af
+  - enabled: 1
+    path: Assets/Scenes/Level6LoadingScreen.unity
+    guid: 3fdc5a7bceef6e042abc970f5a0cbe87
+  - enabled: 1
+    path: Assets/Scenes/Level6-PrisonYard.unity
     guid: d69eaf77ecb7101499c93471d91591e0
   - enabled: 1
     path: Assets/Scenes/GameCompletionLoadingScreen.unity

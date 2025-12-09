@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &1733402093
+--- !u!1001 &592451055
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -129,11 +129,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6027132386233405105, guid: a6f17adfe4a96b54bbaae93bdecbbc84, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0689764
+      value: 0.66472703
       objectReference: {fileID: 0}
     - target: {fileID: 6027132386233405105, guid: a6f17adfe4a96b54bbaae93bdecbbc84, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.9844225
+      value: 0.92857087
       objectReference: {fileID: 0}
     - target: {fileID: 6027132386233405105, guid: a6f17adfe4a96b54bbaae93bdecbbc84, type: 3}
       propertyPath: m_LocalPosition.z
@@ -169,11 +169,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6707351799108983762, guid: a6f17adfe4a96b54bbaae93bdecbbc84, type: 3}
       propertyPath: levelIndex
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6707351799108983762, guid: a6f17adfe4a96b54bbaae93bdecbbc84, type: 3}
       propertyPath: currentLevelName
-      value: Level2-SecurityDoor
+      value: Level6-PrisonYard
       objectReference: {fileID: 0}
     - target: {fileID: 6739835750349366364, guid: a6f17adfe4a96b54bbaae93bdecbbc84, type: 3}
       propertyPath: m_Name
@@ -188,4 +188,4 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1733402093}
+  - {fileID: 592451055}

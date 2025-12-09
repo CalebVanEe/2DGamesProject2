@@ -5,17 +5,29 @@ using UnityEngine.SceneManagement;
 
 public class LoadingSceneManagerScript : MonoBehaviour
 {
-    public string Level1FirstMessage = "Your name is Dimitri. You have been wrongfully imprisoned in a Russian prison for the past 10 years";
-    public string Level1SecondMessage = "You have finally had enough and decide to escape, but it won't be easy";
-    public string Level1ThirdMessage = "You are in the depths of the prison in the torture chamber. You must find your way out to survive";
-    public string Level2Message = "You've escaped the Torture Chamber, and find yourself locked in the Warden's Office. Find the 2 keys to unlock the door";
-    public string Level3Message = "You've made your way out to the prison yard. The guards have discovered your absence and are looking for you. Escape or die";
-    public string CompletionMessage = "You finally escaped the Russian Prison and reunited with your family after 10 years of imprisonment";
+    private string Level1FirstMessage = "Your name is Dimitri. You have been wrongfully imprisoned in a Russian prison for the past 10 years";
+    private string Level1SecondMessage = "You have finally had enough and decide to escape, but it won't be easy";
+    private string Level1ThirdMessage = "You are in the depths of the prison in the torture chamber. You must find your way out to survive";
+    private string Level2Message = "You found yourself trapped behind a security door, find the combination to escape";
+    private string Level3Message = "You've made your way to the cell block. It is past curfew, avoid the guards and find a way out";
+    private string Level4Message = "You've escaped the cell block, and find yourself locked in the Warden's Office. Find the 2 keys to unlock the door";
+    private string Level5Message = "You stumbled into the prison armory, the guards here are heavily armed. Run for your life";
+    private string Level6Message = "You've made your way out to the prison yard. All the guards have been notified of your absence and are looking for you. Escape or die";
+    private string CompletionMessage = "You finally escaped the Russian Prison and reunited with your family after 10 years of imprisonment";
     public int levelIndex;
     public TMP_Text messageText;
     public string currentLevelName;
+    private string[] loadingMessages;
     void Start()
     {
+        loadingMessages = new string[]
+        {
+            Level2Message,
+            Level3Message,
+            Level4Message,
+            Level5Message,
+            Level6Message,
+        };
         DisplayMessage();
         PlayerPrefs.SetString("CurrentLevel", currentLevelName);
     }
@@ -24,25 +36,23 @@ public class LoadingSceneManagerScript : MonoBehaviour
     {
         if (levelIndex == 1)
         {
-
             StartCoroutine(DisplayLevel1Messages());
         }
-        else if (levelIndex == 2)
+        else if (levelIndex < 7)
         {
-
-            StartCoroutine(TypeText(Level2Message));
-            Invoke("LoadLevel2", 7f);
+            StartCoroutine(TypeText(loadingMessages[levelIndex-2]));
+            Invoke("LoadLevel" + levelIndex, 7f);
         }
-        else if (levelIndex == 3)
-        {
-            StartCoroutine(TypeText(Level3Message));
-            Invoke("LoadLevel3", 8f);
-        }
-        else if (levelIndex == 4)
+        else if (levelIndex == 7)
         {
             StartCoroutine(TypeText(CompletionMessage));
             Invoke("WinningScene", 10f);
         }
+    }
+    public void SkipMessage()
+    {
+        StopAllCoroutines();
+        Invoke("LoadLevel" + levelIndex, 0.1f);
     }
 
     IEnumerator DisplayLevel1Messages()
@@ -75,24 +85,48 @@ public class LoadingSceneManagerScript : MonoBehaviour
 
     void LoadLevel1()
     {
-        currentLevelName = "Level1-Caleb";
+        currentLevelName = "Level1-TortureChamber";
         PlayerPrefs.SetString("CurrentLevel", currentLevelName);
-        SceneManager.LoadScene("Level1-Caleb");
+        SceneManager.LoadScene("Level1-TortureChamber");
     }
 
     void LoadLevel2()
     {
-        currentLevelName = "Level2-Jacqueline";
+        currentLevelName = "Level2-SecurityDoor";
         PlayerPrefs.SetString("CurrentLevel", currentLevelName);
-        SceneManager.LoadScene("Level2-Jacqueline");
+        SceneManager.LoadScene("Level2-SecurityDoor");
     }
 
     void LoadLevel3()
     {
 
-        currentLevelName = "Level3-Daniel";
+        currentLevelName = "Level3-CellBlock";
         PlayerPrefs.SetString("CurrentLevel", currentLevelName);
-        SceneManager.LoadScene("Level3-Daniel");
+        SceneManager.LoadScene("Level3-CellBlock");
+    }
+
+    void LoadLevel4()
+    {
+
+        currentLevelName = "Level4-WardenOffice";
+        PlayerPrefs.SetString("CurrentLevel", currentLevelName);
+        SceneManager.LoadScene("Level4-WardenOffice");
+    }
+
+    void LoadLevel5()
+    {
+
+        currentLevelName = "Level5-Armory";
+        PlayerPrefs.SetString("CurrentLevel", currentLevelName);
+        SceneManager.LoadScene("Level5-Armory");
+    }
+
+    void LoadLevel6()
+    {
+
+        currentLevelName = "Level6-PrisonYard";
+        PlayerPrefs.SetString("CurrentLevel", currentLevelName);
+        SceneManager.LoadScene("Level6-PrisonYard");
     }
 
     void LoadMainMenu()
