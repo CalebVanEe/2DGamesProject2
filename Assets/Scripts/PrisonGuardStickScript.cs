@@ -12,7 +12,7 @@ public class PrisonGuardStickScript : MonoBehaviour
 
     private float eyeDistance = 5f;
     private float huntDistance = 15f;
-    private float patrolSpeed = 2f;
+    private float patrolSpeed = 1.5f;
     private float huntSpeed = 4f;
 
     private float highJumpPower = 15f;
@@ -410,6 +410,7 @@ public class PrisonGuardStickScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && _sceneManager != null)
         {
+            PlayerPrefs.SetString("KillMessage", "beaten to death");
             _sceneManager.PlayerHit();
         }
         else if (collision.gameObject.CompareTag("Crate") && !isHunting)
