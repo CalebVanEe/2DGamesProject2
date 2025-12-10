@@ -104,6 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3940f67a9459d34ab37a157a8c08207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  playerTop: {fileID: 4509075367670901094, guid: 0f7708f49dde11f42969fc2ed780f15c, type: 3}
+  playerBottom: {fileID: 5073144377845427018, guid: f883266f4a8cebc4eb3d10d8b4c15f9a, type: 3}
 --- !u!70 &9093758206171475169
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -134,7 +136,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

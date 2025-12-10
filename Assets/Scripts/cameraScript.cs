@@ -87,4 +87,13 @@ public class cameraScript : MonoBehaviour
         targetPosition.x -= offset.x;
         targetPosition.y -= offset.y;
     }
+    public void SetPlayer(GameObject newPlayer)
+    {
+        player = newPlayer;
+        if (player != null)
+        {
+            targetPosition = new Vector3(player.transform.position.x + offset.x, player.transform.position.y + offset.y, offset.z);
+            transform.position = targetPosition;
+        }
+    }
 }
