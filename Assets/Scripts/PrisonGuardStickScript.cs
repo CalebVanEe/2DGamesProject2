@@ -410,7 +410,7 @@ public class PrisonGuardStickScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && _sceneManager != null)
         {
-            PlayerPrefs.SetString("KillMessage", "beaten to death");
+            PlayerPrefs.SetString("KillMessage", "You got beaten to death");
             _sceneManager.PlayerHit();
         }
         else if (collision.gameObject.CompareTag("Crate") && !isHunting)

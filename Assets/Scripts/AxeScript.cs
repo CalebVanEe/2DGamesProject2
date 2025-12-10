@@ -17,7 +17,7 @@ public class AxeScript : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
-            PlayerPrefs.SetString("KillMessage", "sliced into pieces");
+            PlayerPrefs.SetString("KillMessage", "You got sliced into pieces");
         levelSceneManagerScript.PlayerHit();
     }
 }

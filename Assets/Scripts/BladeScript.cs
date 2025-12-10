@@ -20,7 +20,7 @@ public class BladeScript : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
-            PlayerPrefs.SetString("KillMessage", "ripped apart");
+            PlayerPrefs.SetString("KillMessage", "You got ripped apart");
             levelSceneManagerScript.PlayerHit();
     }
 }

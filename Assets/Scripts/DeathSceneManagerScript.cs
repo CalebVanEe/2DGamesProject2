@@ -11,7 +11,7 @@ public class DeathSceneManagerScript : MonoBehaviour
     void Start()
     {
         killMessage = PlayerPrefs.GetString("KillMessage");
-        deathMessage.text = "You got " + killMessage + "!";
+        deathMessage.text = killMessage + "!";
         //int min = PlayerPrefs.GetInt("LevelTime") / 60;
         //int sec = PlayerPrefs.GetInt("LevelTime") % 60;
         //Score.text = min + ":" + sec;
