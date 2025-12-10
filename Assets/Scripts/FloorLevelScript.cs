@@ -18,7 +18,7 @@ public class FloorLevelScript : MonoBehaviour
     public TMP_InputField codeInput;
     public GameObject door;
     public InputField cod;
-    
+    bool doorGotHit = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

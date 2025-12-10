@@ -7,33 +7,33 @@ public class mouseScript : MonoBehaviour
     float speed = .6f;
     public GameObject player;
     GameObject target;
-    public LayerMask targetLayer;
-    public LayerMask platformLayer;
+    public LayerMask targetLayer; //Player
+    public LayerMask platformLayer; //MouseWall/Trap
     Vector3 wayToMove;
     Rigidbody2D r;
     FloorLevelScript floorLevelScript;
     float lastTimeBlocked;
     bool blocked;
+    bool facingRight;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         wayToMove = Vector3.right * speed;
+        facingRight = true;
         r = GetComponent<Rigidbody2D>();
         floorLevelScript = FindAnyObjectByType<FloorLevelScript>();
         lastTimeBlocked = Time.time;
         blocked = false;
+        
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(blocked && (Time.time - lastTimeBlocked > 2f))
-        {
-            blocked = false;
-        }
-
-        if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 4f, targetLayer))
+        blocked = false;
+        if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 3f, targetLayer))
         {
             //if (r.linearVelocityX > 0)
             //{
@@ -48,33 +48,37 @@ public class mouseScript : MonoBehaviour
             //}
 
         }
-        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 4f, targetLayer))
+        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 3f, targetLayer))
         {
             //if (r.linearVelocityX > 0)
             //{
             wayToMove = Vector2.right * speed;
             blocked = true;
-            //}
-            //else
-            //{
-            //    blocked = true;
-            //    lastTimeBlocked = Time.time;
-            //    wayToMove = Vector2.left * speed;
-            //}
+            
         }
         // calculate distance to move
-        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, .5f, platformLayer) && !blocked)
+        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 1f, platformLayer) && !blocked)
         {
             wayToMove = Vector3.right * speed;
-            blocked = true;
+            
         }
-        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, .5f, platformLayer) && !blocked)
+        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 1f, platformLayer) && !blocked)
         {
             wayToMove = Vector3.left * speed;
+            
         }
         
         r.linearVelocity = wayToMove;
-        blocked = false;
+        
+        if (r.linearVelocityX < 0 && facingRight)
+        {
+            Flip();
+        }
+        else if (r.linearVelocityX > 0 && !facingRight)
+        {
+            Flip();
+        }
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -82,5 +86,13 @@ public class mouseScript : MonoBehaviour
         {
             floorLevelScript.hitMouse();
         }
+    }
+
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
     }
 }
