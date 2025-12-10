@@ -81,17 +81,19 @@ public class FloorLevelScript : MonoBehaviour
     {
         PlayerPrefs.SetFloat("LevelTime", totalTime);
 
-        //int previousLives = PlayerPrefs.GetInt("Lives");
-        //if (previousLives <= 1)
-        //{
-        //    SceneManager.LoadScene("GameOverScene");
-        //}
-        //else
-        //{
+        int previousLives = PlayerPrefs.GetInt("Lives");
+        if (previousLives <= 1)
+        {
+            SceneManager.LoadScene("GameOverScene");
+            
+        }
+        else
+        {
 
-        //    PlayerPrefs.SetInt("Lives", (previousLives - 1));
-        //    SceneManager.LoadScene("DeathScene");
-        //}
+            PlayerPrefs.SetInt("Lives", (previousLives - 1));
+            PlayerPrefs.SetString("KillMessage", "You got bit by a mouse");
+            SceneManager.LoadScene("DeathScene");
+        }
     }
     public void hitGoodIvy(GameObject g)
     {
@@ -120,7 +122,7 @@ public class FloorLevelScript : MonoBehaviour
             door.GetComponent<Animator>().enabled = true;
 
 
-            //SceneManager.LoadScene("Level3-Daniel");
+            SceneManager.LoadScene("Level4LoadingScene");
         }
         else
         {

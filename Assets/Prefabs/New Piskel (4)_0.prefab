@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6193132431362194240}
   - component: {fileID: 1587973238180507916}
   - component: {fileID: 2610122991936212886}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: New Piskel (4)_0
   m_TagString: Key
   m_Icon: {fileID: 0}

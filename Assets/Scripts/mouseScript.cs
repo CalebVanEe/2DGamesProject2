@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class mouseScript : MonoBehaviour
 {
-    float speed = .8f;
+    float speed = .6f;
     public GameObject player;
     GameObject target;
     public LayerMask targetLayer;
@@ -47,7 +47,6 @@ public class mouseScript : MonoBehaviour
             //    wayToMove = Vector2.right * speed;
             //}
 
-            Debug.Log("see a man");
         }
         else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 4f, targetLayer))
         {
@@ -62,18 +61,15 @@ public class mouseScript : MonoBehaviour
             //    lastTimeBlocked = Time.time;
             //    wayToMove = Vector2.left * speed;
             //}
-            Debug.Log("see a man");
         }
         // calculate distance to move
         else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, .5f, platformLayer) && !blocked)
         {
             wayToMove = Vector3.right * speed;
-            Debug.Log("see a wall");
             blocked = true;
         }
         else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, .5f, platformLayer) && !blocked)
         {
-            Debug.Log("see a wall");
             wayToMove = Vector3.left * speed;
         }
         
