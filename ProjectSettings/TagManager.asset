@@ -58,5 +58,11 @@ TagManager:
   - name: back
     uniqueID: 1374967881
     locked: 0
+  - name: Base
+    uniqueID: 519748657
+    locked: 0
+  - name: Gun
+    uniqueID: 901466993
+    locked: 0
   m_RenderingLayers:
   - Default

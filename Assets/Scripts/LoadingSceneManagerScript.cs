@@ -117,6 +117,7 @@ public class LoadingSceneManagerScript : MonoBehaviour
     {
 
         currentLevelName = "Level5-Armory";
+        PlayerPrefs.SetInt("SewerIntroSeen", 0);
         PlayerPrefs.SetString("CurrentLevel", currentLevelName);
         SceneManager.LoadScene("Level5-Armory");
     }
