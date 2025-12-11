@@ -1422,7 +1422,7 @@ GameObject:
   - component: {fileID: 1286590612}
   - component: {fileID: 1286590615}
   - component: {fileID: 1286590614}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: StaryNight_0
   m_TagString: Painting
   m_Icon: {fileID: 0}

@@ -162,7 +162,7 @@ public class SceneManagerscript : MonoBehaviour
     public void nextScene()
     {
         PlayerPrefs.SetFloat("LevelTime", totalTime);
-        SceneManager.LoadScene("Level3LoadingScreen");
+        SceneManager.LoadScene("Level5LoadingScreen");
         
     }
     
@@ -181,6 +181,7 @@ public class SceneManagerscript : MonoBehaviour
             {
 
                 PlayerPrefs.SetInt("Lives", (previousLives - 1));
+                PlayerPrefs.SetString("KillMessage", "You got bit by a bat");
                 SceneManager.LoadScene("DeathScene");
             }
         }

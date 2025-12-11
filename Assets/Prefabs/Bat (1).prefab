@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4872160126329416551}
   - component: {fileID: 2551334354633740372}
   - component: {fileID: 371696575360692713}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bat (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,4 +191,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec44c7903fcbe44db9bf4fd1dd499e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::batScript
-  player: {fileID: 2090252722609756580, guid: 6aa669eb1b55a234ebca432c724e40d4, type: 3}

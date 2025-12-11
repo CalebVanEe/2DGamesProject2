@@ -1,15 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class DeathSceneManagerScript : MonoBehaviour
 {
-
-
+    private string killMessage;
+    public TMP_Text deathMessage;
     //public TMPro.TMP_Text Score;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        killMessage = PlayerPrefs.GetString("KillMessage");
+        deathMessage.text = killMessage + "!";
         //int min = PlayerPrefs.GetInt("LevelTime") / 60;
         //int sec = PlayerPrefs.GetInt("LevelTime") % 60;
         //Score.text = min + ":" + sec;

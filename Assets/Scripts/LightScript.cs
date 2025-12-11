@@ -10,12 +10,15 @@ public class LightScript : MonoBehaviour
     public float innerSpotAngle;
     public float lightDistance;
     Level3SceneManagerScript _manager;
+    public GameObject caughtSprite;
+    cameraScript cameraScript;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _manager = FindAnyObjectByType<Level3SceneManagerScript>();
+        cameraScript = GameObject.Find("Main Camera").GetComponent<cameraScript>();
     }
 
     private float _time;
@@ -24,7 +27,6 @@ public class LightScript : MonoBehaviour
     {
         panLight();
         catchPlayer();
-
     }
 
     void panLight()
@@ -50,12 +52,29 @@ public class LightScript : MonoBehaviour
 
 
 
-        if ( hit1.collider != null && hit1.collider.CompareTag("Player") || hit2.collider != null && hit2.collider.CompareTag("Player"))
+        if (hit1.collider != null && hit1.collider.CompareTag("Player") || hit2.collider != null && hit2.collider.CompareTag("Player"))
         {
-            _manager.playerCaught();
-
+            GameObject caughtPlayerSprite = null;
+            if (hit1.collider != null)
+            {
+                caughtPlayerSprite = Instantiate(caughtSprite, hit1.collider.gameObject.transform.position, Quaternion.identity);
+                Destroy(hit1.collider.gameObject);
+            }
+            else
+            {
+                caughtPlayerSprite = Instantiate(caughtSprite, hit2.collider.gameObject.transform.position, Quaternion.identity);
+                Destroy(hit2.collider.gameObject);
+            }
+            cameraScript.SetPlayer(caughtPlayerSprite);
+            PlayerPrefs.SetString("KillMessage", "You got caught");
+            Invoke("caughtPlayer", 2f);
         }
     }
+    void caughtPlayer()
+    {
+        _manager.playerCaught();
+    }
+    
 }
 
 

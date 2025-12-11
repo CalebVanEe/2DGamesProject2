@@ -181,16 +181,10 @@ MonoBehaviour:
   platformLayers:
     serializedVersion: 2
     m_Bits: 192
-  eyeDistance: 5
-  huntDistance: 15
-  patrolSpeed: 1
-  huntSpeed: 4
-  jumpPower: 18
-  wallCheckDistance: 0.6
-  edgeCheckDistance: 0.6
-  heightThreshold: 1
   knockedOutSprite: {fileID: 3175072988155283074, guid: 236b0faf348be3943b75ecac7bc873f4, type: 3}
   knockOutSound: {fileID: 8300000, guid: 72e791a5fbf261948a40aacee1018bc9, type: 3}
+  knockOut: {fileID: 8179423755588842996, guid: 9b704f8470df7e4449fddb3e978a8b29, type: 3}
+  verticalJumpMultiplier: 1.5
 --- !u!50 &1924581563175211684
 Rigidbody2D:
   serializedVersion: 5

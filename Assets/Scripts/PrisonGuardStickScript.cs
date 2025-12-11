@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.LowLevel;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -9,10 +10,13 @@ public class PrisonGuardStickScript : MonoBehaviour
     public LayerMask platformLayers;
     public GameObject knockedOutSprite;
     public AudioClip knockOutSound;
+    public GameObject knockOut;
+    private cameraScript cameraScript;
+    public bool debugMode = false;
 
     private float eyeDistance = 5f;
     private float huntDistance = 15f;
-    private float patrolSpeed = 2f;
+    private float patrolSpeed = 1.5f;
     private float huntSpeed = 4f;
 
     private float highJumpPower = 15f;
@@ -49,6 +53,9 @@ public class PrisonGuardStickScript : MonoBehaviour
         GameObject managerObj = GameObject.Find("LevelSceneManager");
         if (managerObj != null)
             _sceneManager = managerObj.GetComponent<LevelSceneManagerScript>();
+        GameObject cameraObj = GameObject.Find("Main Camera");
+        if (cameraObj != null)
+            cameraScript = cameraObj.GetComponent<cameraScript>();
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
@@ -61,15 +68,21 @@ public class PrisonGuardStickScript : MonoBehaviour
 
     void Update()
     {
+        if (debugMode)
+            return;
         if (jumpCooldown > 0) jumpCooldown -= Time.deltaTime;
         if (dropCommitTimer > 0) dropCommitTimer -= Time.deltaTime;
-
         CheckGrounded();
         ScanForPlayer();
     }
 
     void FixedUpdate()
     {
+        if (debugMode)
+        {
+            PatrolLogic();
+            return;
+        }
         // Apply high horizontal speed during a long jump
         if (isLongJumping && !isGrounded)
         {
@@ -410,12 +423,21 @@ public class PrisonGuardStickScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && _sceneManager != null)
         {
-            _sceneManager.PlayerHit();
+            GameObject deadPlayer = Instantiate(knockOut, collision.transform.position, Quaternion.identity);
+            deadPlayer.GetComponent<Rigidbody2D>().angularVelocity = 5f;
+            cameraScript.SetPlayer(deadPlayer);
+            Destroy(collision.gameObject);
+            Invoke("KillPlayer", 2f);
         }
         else if (collision.gameObject.CompareTag("Crate") && !isHunting)
         {
             KnockedOut();
         }
+    }
+    private void KillPlayer()
+    {
+        PlayerPrefs.SetString("KillMessage", "You got beaten to death");
+        _sceneManager.PlayerHit();
     }
 
     public void KnockedOut()
