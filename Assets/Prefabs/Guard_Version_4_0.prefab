@@ -290,6 +290,9 @@ MonoBehaviour:
   flashlightLength: 5
   flashlightAngle: 30
   moveSpeed: 2
+  caughtSprite: {fileID: 6000730751245640428, guid: 12c9487d52ca069478a2667dbc3b151c, type: 3}
   _playerLayer:
     serializedVersion: 2
     m_Bits: 256
+  knockOutSound: {fileID: 8300000, guid: 72e791a5fbf261948a40aacee1018bc9, type: 3}
+  knockedOutSprite: {fileID: 3175072988155283074, guid: 236b0faf348be3943b75ecac7bc873f4, type: 3}

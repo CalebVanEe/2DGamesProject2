@@ -24,8 +24,7 @@ public class Level3SceneManagerScript : MonoBehaviour
         {
             SceneManager.LoadScene("GameOverScene");
         }
-        else { 
-
+        else {
             PlayerPrefs.SetInt("Lives", (previousLives - 1));
             SceneManager.LoadScene("DeathScene");
         }

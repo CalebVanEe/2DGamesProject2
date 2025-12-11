@@ -26,7 +26,7 @@ public class BladeScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             GameObject topHalf = Instantiate(playerTop, collision.transform.position, Quaternion.identity);
-            GameObject bottomHalf = Instantiate(playerBottom, collision.transform.position - Vector3.up, Quaternion.identity);
+            GameObject bottomHalf = Instantiate(playerBottom, collision.transform.position - Vector3.up * 0.5f, Quaternion.identity);
             topHalf.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(-2f, 1f);
             bottomHalf.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(2f, 0);
             cameraScript.SetPlayer(topHalf);

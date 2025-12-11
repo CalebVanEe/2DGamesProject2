@@ -105,10 +105,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   speed: 1
-  angleRange: 75
+  angleRange: 80
   _light: {fileID: 3726649700496540347}
   innerSpotAngle: 6
   lightDistance: 11
+  caughtSprite: {fileID: 6000730751245640428, guid: 12c9487d52ca069478a2667dbc3b151c, type: 3}
 --- !u!1 &7150609453367610807
 GameObject:
   m_ObjectHideFlags: 0

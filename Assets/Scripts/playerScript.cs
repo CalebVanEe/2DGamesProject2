@@ -398,6 +398,11 @@ public class playerScript : MonoBehaviour
                     if (!guard.getHunting()) 
                         guard.KnockedOut();
                 }
+                GuardScript guardFlashlight = guardHit.collider.GetComponent<GuardScript>();
+                if (guardFlashlight != null)
+                {
+                    guardFlashlight.KnockedOut();
+                }
             }
         }
     }
