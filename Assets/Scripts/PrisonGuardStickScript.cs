@@ -12,6 +12,7 @@ public class PrisonGuardStickScript : MonoBehaviour
     public AudioClip knockOutSound;
     public GameObject knockOut;
     private cameraScript cameraScript;
+    public bool debugMode = false;
 
     private float eyeDistance = 5f;
     private float huntDistance = 15f;
@@ -67,15 +68,21 @@ public class PrisonGuardStickScript : MonoBehaviour
 
     void Update()
     {
+        if (debugMode)
+            return;
         if (jumpCooldown > 0) jumpCooldown -= Time.deltaTime;
         if (dropCommitTimer > 0) dropCommitTimer -= Time.deltaTime;
-
         CheckGrounded();
         ScanForPlayer();
     }
 
     void FixedUpdate()
     {
+        if (debugMode)
+        {
+            PatrolLogic();
+            return;
+        }
         // Apply high horizontal speed during a long jump
         if (isLongJumping && !isGrounded)
         {

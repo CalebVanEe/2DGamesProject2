@@ -5,52 +5,76 @@ using UnityEngine.SceneManagement;
 public class tutorialSceneManagerScript : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    bool teachJump;
+    bool teachPush;
+    bool teachWallJump;
     bool teachCrouch;
-    bool teachKey;
+    bool teachSprint;
+    bool teachKnockout;
     public GameObject player;
     public TMPro.TMP_Text instructions;
     int numKeys = 1;
     int keysCollected = 0;
     public GameObject door;
-    bool teachSprint;
+    private float displayTime;
     void Start()
     {
+        teachJump = false;
+        teachPush = false;
+        teachWallJump = false;
         teachCrouch = false;
         teachSprint = false;
+        teachKnockout = false;
         door.GetComponent<Animator>().enabled = false;
-        teachKey = false;
         instructions.text = "Use the 'a' and 'd' keys to move";
-        Invoke("dissapearText", 2);
-        instructions.text = "Move the crates to create stairs in case you need them later";
-        instructions.enabled = true;
-        Invoke("dissapearText", 2);
+        displayTime = Time.time;
+    }
+    private void Update()
+    {
+        if (Time.time - displayTime >= 2)
+        {
+            instructions.text = "";
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if ((player.transform.position.x >= -3 && player.transform.position.x <= -1.5) && !teachCrouch)
+        if (player.transform.position.x >= -6 && !teachJump)
         {
-            instructions.text = "Use the 's' key to crouch and inspect what's under the wall";
-            instructions.enabled = true;
+            instructions.text = "Use 'Space' to jump";
+            teachJump = true;
+            displayTime = Time.time;
+        }
+        if (player.transform.position.x >= -1 && !teachPush)
+        {
+            instructions.text = "Push the box by walking into it";
+            teachPush = true;
+            displayTime = Time.time;
+        }
+        if (player.transform.position.x >= 6 && !teachWallJump)
+        {
+            instructions.text = "Jump while pressing against walls to wall jump";
+            teachWallJump = true;
+            displayTime = Time.time;
+        }
+        if (player.transform.position.x >= 11 && !teachCrouch)
+        {
+            instructions.text = "Hold 's' to crouch";
             teachCrouch = true;
-            Invoke("dissapearText", 2);
+            displayTime = Time.time;
         }
-
-        if(player.transform.position.x >=4 && player.transform.position.x <=5 && player.transform.position.y <= 2 && player.transform.position.y > 0 && !teachSprint)
+        if (player.transform.position.x >= 24 && !teachSprint)
         {
-            instructions.text = "Use the 'shift' key to sprint";
-            instructions.enabled = true;
+            instructions.text = "Hold 'Shift' while moving to sprint";
             teachSprint = true;
-            Invoke("dissapearText", 2);
+            displayTime = Time.time;
         }
-        
-
-    }
-
-    public void dissapearText()
-    {
-        instructions.enabled = false;
+        if (player.transform.position.x >= 38 && !teachKnockout)
+        {
+            instructions.text = "Press 'E' to knock out guards";
+            teachKnockout = true;
+            displayTime = Time.time;
+        }
     }
 
     public void Finding(GameObject g)
@@ -58,16 +82,14 @@ public class tutorialSceneManagerScript : MonoBehaviour
         keysCollected++;
         Destroy(g);
         instructions.text = "Use the key to open the door and escape!";
-        instructions.enabled = true;
-        Invoke("dissapearText", 2);
-        
+        displayTime = Time.time;
     }
     public void hitDoor()
     {
         if (numKeys == keysCollected)
         {
             door.GetComponent<Animator>().enabled=true;
-            Invoke("nextLevel", 1);
+            Invoke("nextLevel", 1f);
         }
     }
     public void nextLevel()
