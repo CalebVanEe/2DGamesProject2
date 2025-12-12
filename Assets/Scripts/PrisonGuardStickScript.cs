@@ -425,7 +425,16 @@ public class PrisonGuardStickScript : MonoBehaviour
         {
             GameObject deadPlayer = Instantiate(knockOut, collision.transform.position, Quaternion.identity);
             deadPlayer.GetComponent<Rigidbody2D>().angularVelocity = 5f;
-            cameraScript.SetPlayer(deadPlayer);
+            if (cameraScript == null)
+            {
+                GameObject cameraObj = GameObject.Find("Main Camera");
+                SewerCameraScript sewerCameraScript = cameraObj.GetComponent<SewerCameraScript>();
+                sewerCameraScript.SetPlayer(deadPlayer);
+            }
+            else
+            {
+                cameraScript.SetPlayer(deadPlayer);
+            }
             Destroy(collision.gameObject);
             Invoke("KillPlayer", 2f);
         }

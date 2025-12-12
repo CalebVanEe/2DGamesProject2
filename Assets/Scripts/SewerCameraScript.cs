@@ -154,11 +154,19 @@ public class SewerCameraScript : MonoBehaviour
         }
         transform.position = gratePosition;
         grate.SetActive(false);
-
+        
         yield return new WaitForSeconds(1f);
-
+        transform.position = player.transform.position;
         track = true;
         PlayerPrefs.SetInt("PlayerImmune", 0);
     }
-
+    public void SetPlayer(GameObject newPlayer)
+    {
+        player = newPlayer;
+        if (player != null)
+        {
+            targetPosition = new Vector3(player.transform.position.x + offset.x, player.transform.position.y + offset.y, offset.z);
+            transform.position = targetPosition;
+        }
+    }
 }
