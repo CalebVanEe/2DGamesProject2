@@ -983,6 +983,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b383e410a619964daaf9e8a85cacb7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  playerTop: {fileID: 0}
+  playerBottom: {fileID: 0}
   spinsPerSecond: 1
 --- !u!1 &244680143
 GameObject:
@@ -3679,6 +3681,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b383e410a619964daaf9e8a85cacb7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SewerBladeScript
+  playerTop: {fileID: 0}
+  playerBottom: {fileID: 0}
   spinsPerSecond: 1
 --- !u!1001 &692808665
 PrefabInstance:
@@ -7566,7 +7570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7689519949735624932, guid: bc85ce94269ef444f874caab870611fd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.86
+      value: 7.69
       objectReference: {fileID: 0}
     - target: {fileID: 7689519949735624932, guid: bc85ce94269ef444f874caab870611fd, type: 3}
       propertyPath: m_LocalPosition.z
