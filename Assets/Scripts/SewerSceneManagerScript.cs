@@ -13,8 +13,6 @@ public class SewerSceneManager : MonoBehaviour
 
     private float lastLevelTime;
     private float startTime;
-    public TMPro.TMP_Text timerText;
-
     void Start()
     {
 
@@ -35,14 +33,6 @@ public class SewerSceneManager : MonoBehaviour
         totalTime = Mathf.RoundToInt(lastLevelTime + levelTime);
         int min = (totalTime / 60);
         int sec = totalTime % 60;
-        if (sec < 10)
-        {
-            timerText.text = min.ToString() + ":0" + sec.ToString();
-        }
-        else
-        {
-            timerText.text = min.ToString() + ":" + sec.ToString();
-        }
     }
     public void playerCaught()
     {

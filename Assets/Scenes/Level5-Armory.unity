@@ -6987,9 +6987,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelSceneManagerScript
   Door1Location: {x: 153, y: 13, z: 0}
   player: {fileID: 473734501}
-  door: {fileID: 0}
-  timerText: {fileID: 0}
-  level: 0
+  door: {fileID: 614304791}
+  timerText: {fileID: 278811504}
+  level: 5
 --- !u!4 &1422917000
 Transform:
   m_ObjectHideFlags: 0
@@ -8078,7 +8078,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   bulletPrefab: {fileID: 1605494537975459237, guid: 04a629c26413fb1449060be0acf3cf79, type: 3}
   door: {fileID: 0}
-  timerText: {fileID: 278811504}
 --- !u!1001 &1716472071
 PrefabInstance:
   m_ObjectHideFlags: 0
