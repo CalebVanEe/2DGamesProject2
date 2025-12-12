@@ -42,7 +42,7 @@ public class FloorLevelScript : MonoBehaviour
     void Update()
     {
         updateTimer();
-        if (codeInput.text.Equals(code))
+        if (codeInput.text.Equals(code) && !correctCode)
         {
             lyk.text = "That is the correct code! Exit through the door!";
             lyk.enabled = true;
