@@ -79,7 +79,8 @@ public class TurretScript : MonoBehaviour
     private float _time;
     public float angleRange;
     void Aim() {
-
+        if (player == null)
+            return;
         Vector2 direction = (Vector2)player.transform.position - turretRbody.position;
             Debug.DrawRay(
             turretRbody.position,
