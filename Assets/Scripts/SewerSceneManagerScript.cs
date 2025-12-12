@@ -5,6 +5,7 @@ public class SewerSceneManager : MonoBehaviour
 {
     public GameObject bulletPrefab;
     ObjectPool bulletpool;
+    public GameObject door;
 
 
     cameraPanningScript cameraPanningScript;
@@ -67,6 +68,19 @@ public class SewerSceneManager : MonoBehaviour
         updateTimer();
     }
 
+    public void hitDoor()
+    {
+
+            door.GetComponent<Animator>().enabled = true;
+            Invoke("nextScene", 2);
+    }
+
+    public void nextScene()
+    {
+        PlayerPrefs.SetFloat("LevelTime", totalTime);
+        SceneManager.LoadScene("Level6LoadingScreen");
+
+    }
     public GameObject GetBullet()
     {
         return bulletpool.GetObject();

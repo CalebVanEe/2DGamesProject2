@@ -86,6 +86,8 @@ public class LevelSceneManagerScript : MonoBehaviour
             SceneManager.LoadScene("Level2LoadingScreen");
         if (level == 3)
             SceneManager.LoadScene("Level4LoadingScreen");
+        if (level == 5)
+            SceneManager.LoadScene("Level6LoadingScreen");
     }
     public void KeyCollected()
     {
