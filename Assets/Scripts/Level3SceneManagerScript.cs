@@ -12,6 +12,7 @@ public class Level3SceneManagerScript : MonoBehaviour
     void Start()
     {
         lastLevelTime = PlayerPrefs.GetFloat("LevelTime");
+        PlayerPrefs.SetInt("PlayerImmune", 0);
         startTime = Time.time;
     }
 
