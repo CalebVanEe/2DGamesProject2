@@ -3559,6 +3559,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Saw (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8945855620330513446, guid: 26f3962c0ea55c145ba830379a09bb11, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 808694218026766350, guid: 26f3962c0ea55c145ba830379a09bb11, type: 3}
     m_RemovedGameObjects: []
