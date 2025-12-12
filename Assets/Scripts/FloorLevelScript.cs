@@ -122,6 +122,7 @@ public class FloorLevelScript : MonoBehaviour
             door.GetComponent<Collider2D>().enabled = false;
             door.GetComponent<Animator>().enabled = true;
 
+            PlayerPrefs.SetFloat("LevelTime", totalTime);
 
             SceneManager.LoadScene("Level3LoadingScreen");
         }
