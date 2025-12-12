@@ -739,7 +739,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 896629745507218276, guid: 694d2a0dbf93a624fbf1729ed0aedc89, type: 3}
       propertyPath: levelIndex
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 896629745507218276, guid: 694d2a0dbf93a624fbf1729ed0aedc89, type: 3}
       propertyPath: messageText
