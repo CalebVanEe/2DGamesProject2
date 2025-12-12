@@ -30,7 +30,7 @@ public class SewerCameraScript : MonoBehaviour
     public GameObject wall2;
     public GameObject wall3;
     public GameObject wall4;
-
+    private int gratesNum = 0;
     private bool track;
     // Start is called once before 
     void Start()
@@ -43,6 +43,9 @@ public class SewerCameraScript : MonoBehaviour
             PlayerPrefs.SetInt("PlayerImmune", 1);
             track = false;
             StartCoroutine(showLevel(grates));
+        }
+        else {
+            PlayerPrefs.SetInt("PlayerImmune", 0);
         }
 
         if (player != null)
@@ -66,10 +69,10 @@ public class SewerCameraScript : MonoBehaviour
         }
         transform.position = startPosition;
         track = true;
-        PlayerPrefs.SetInt("PlayerImmune", 0);
         PlayerPrefs.SetInt("SewerIntroSeen", 1);
-
+        PlayerPrefs.SetInt("PlayerImmune", 0);
     }
+
 
     public float panSpeed;
     private IEnumerator panTo(Vector3 gratePosition)

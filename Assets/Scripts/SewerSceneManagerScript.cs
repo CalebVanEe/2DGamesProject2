@@ -18,7 +18,7 @@ public class SewerSceneManager : MonoBehaviour
 
         lastLevelTime = PlayerPrefs.GetFloat("LevelTime");
         startTime = Time.time;
-        PlayerPrefs.SetInt("PlayerImmune", 0);
+        PlayerPrefs.SetInt("PlayerImmune", 1);
 
         bulletpool = new ObjectPool(bulletPrefab, true, 20);
 
