@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f176dcae289e2b44a458408191c402c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  knockedOutSprite: {fileID: 8179423755588842996, guid: 9b704f8470df7e4449fddb3e978a8b29, type: 3}
 --- !u!50 &5993736524307268806
 Rigidbody2D:
   serializedVersion: 5
