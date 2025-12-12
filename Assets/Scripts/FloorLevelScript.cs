@@ -128,9 +128,13 @@ public class FloorLevelScript : MonoBehaviour
         }
         else
         {
+            
             lyk.text = "Enter the correct code";
+            if (check == 4) { 
+                lyk.text += " " + code; }
             lyk.enabled = true;
             Invoke("removeText", 2);
+           
         }
     }
 }
