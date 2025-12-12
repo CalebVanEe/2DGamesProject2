@@ -5,16 +5,18 @@ using UnityEngine;
 public class mouseScript : MonoBehaviour
 {
     float speed = .6f;
-    public GameObject player;
     GameObject target;
     public LayerMask targetLayer; //Player
     public LayerMask platformLayer; //MouseWall/Trap
     Vector3 wayToMove;
     Rigidbody2D r;
     FloorLevelScript floorLevelScript;
+    public GameObject playerTop;
+    public GameObject playerBottom;
     float lastTimeBlocked;
     bool blocked;
     bool facingRight;
+    bool playerDead = false;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,7 +35,7 @@ public class mouseScript : MonoBehaviour
     void Update()
     {
         blocked = false;
-        if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 3f, targetLayer))
+        if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 2f, targetLayer))
         {
             //if (r.linearVelocityX > 0)
             //{
@@ -48,7 +50,7 @@ public class mouseScript : MonoBehaviour
             //}
 
         }
-        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 3f, targetLayer))
+        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 2f, targetLayer))
         {
             //if (r.linearVelocityX > 0)
             //{
@@ -84,8 +86,21 @@ public class mouseScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            floorLevelScript.hitMouse();
+            if (playerDead)
+                return;
+            GameObject topHalf = Instantiate(playerTop, collision.transform.position, Quaternion.identity);
+            GameObject bottomHalf = Instantiate(playerBottom, collision.transform.position - Vector3.up * 0.5f, Quaternion.identity);
+            topHalf.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(-2f, 1f);
+            bottomHalf.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(2f, 0);
+            GameObject player = collision.gameObject;
+            player.GetComponent<SpriteRenderer>().enabled = false;
+            playerDead = true;
+            Invoke("KillPlayer", 2f);
         }
+    }
+    private void KillPlayer()
+    {
+        floorLevelScript.hitMouse();
     }
 
     void Flip()

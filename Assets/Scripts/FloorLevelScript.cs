@@ -18,7 +18,7 @@ public class FloorLevelScript : MonoBehaviour
     public TMP_InputField codeInput;
     public GameObject door;
     public InputField cod;
-    bool doorGotHit = false;
+    bool correctCode;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -41,10 +41,12 @@ public class FloorLevelScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        updateTimer();
         if (codeInput.text.Equals(code))
         {
             lyk.text = "That is the correct code! Exit through the door!";
             lyk.enabled = true;
+            correctCode = true;
             Invoke("removeText", 2);
         }
     }
@@ -116,19 +118,24 @@ public class FloorLevelScript : MonoBehaviour
 
     public void hitDoor()
     { 
-        if (codeInput.text.Equals(code))
+        if (correctCode)
         {
             door.GetComponent<Collider2D>().enabled = false;
             door.GetComponent<Animator>().enabled = true;
 
+            PlayerPrefs.SetFloat("LevelTime", totalTime);
 
-            SceneManager.LoadScene("Level4LoadingScene");
+            SceneManager.LoadScene("Level3LoadingScreen");
         }
         else
         {
+            
             lyk.text = "Enter the correct code";
+            if (check == 4) { 
+                lyk.text += " " + code; }
             lyk.enabled = true;
             Invoke("removeText", 2);
+           
         }
     }
 }

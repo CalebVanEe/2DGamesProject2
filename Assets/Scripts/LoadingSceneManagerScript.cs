@@ -8,7 +8,7 @@ public class LoadingSceneManagerScript : MonoBehaviour
     private string Level1FirstMessage = "Your name is Dimitri. You have been wrongfully imprisoned in a Russian prison for the past 10 years";
     private string Level1SecondMessage = "You have finally had enough and decide to escape, but it won't be easy";
     private string Level1ThirdMessage = "You are in the depths of the prison in the torture chamber. You must find your way out to survive";
-    private string Level2Message = "You found yourself trapped behind a security door, find the combination to escape";
+    private string Level2Message = "You found yourself trapped behind a security door. Follow the mice to the combination - but not too close";
     private string Level3Message = "You've made your way to the cell block. It is past curfew, avoid the guards and find a way out";
     private string Level4Message = "You've escaped the cell block, and find yourself locked in the Warden's Office. Find the 2 keys to unlock the door";
     private string Level5Message = "You stumbled into the prison Sewer, open the gates and avoid the turrets to make it to the Prison Yard. ";
