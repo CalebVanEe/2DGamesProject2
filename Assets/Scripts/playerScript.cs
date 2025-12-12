@@ -138,6 +138,10 @@ public class playerScript : MonoBehaviour
             // Handle movement with acceleration
             HandleMovement(onGround);
         }
+        else { 
+            rbody.linearVelocityX = 0;
+            rbody.linearVelocityY = 0;
+        }
     }
 
     private void HandleMovement(bool onGround)
