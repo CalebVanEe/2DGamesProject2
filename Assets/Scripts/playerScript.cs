@@ -402,7 +402,7 @@ public class playerScript : MonoBehaviour
         }
         if (button.isPressed)
         {
-            RaycastHit2D guardHit = Physics2D.Raycast(transform.position, facingRight ? Vector2.right : Vector2.left, 1f, guardLayer);
+            RaycastHit2D guardHit = Physics2D.Raycast(transform.position, facingRight ? Vector2.right : Vector2.left, 1.5f, guardLayer);
             if (guardHit.collider != null)
             {
                 PrisonGuardStickScript guard = guardHit.collider.GetComponent<PrisonGuardStickScript>();
