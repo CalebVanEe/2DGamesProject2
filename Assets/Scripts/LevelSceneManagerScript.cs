@@ -21,6 +21,7 @@ public class LevelSceneManagerScript : MonoBehaviour
         door.GetComponent<Animator>().enabled = false;
         lastLevelTime = PlayerPrefs.GetFloat("LevelTime");
         startTime = Time.time;
+        PlayerPrefs.SetInt("PlayerImmune", 0);
     }
 
     // Update is called once per frame
