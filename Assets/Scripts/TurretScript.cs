@@ -1,10 +1,10 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+[RequireComponent(typeof(AudioSource))]
 public class TurretScript : MonoBehaviour
 {
-
+    public AudioClip shootSound;
     SewerSceneManager _manager;
     public GameObject player;
 
@@ -21,19 +21,18 @@ public class TurretScript : MonoBehaviour
 
     public GameObject turret;
     public Rigidbody2D turretRbody;
-
+    private AudioSource _audioSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _manager = FindAnyObjectByType<SewerSceneManager>();
         shouldAim = false;
         canFire = false;
-
+        _audioSource = GetComponent<AudioSource>();
     }
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(shouldAim);
         Aim();
     }
 
@@ -69,6 +68,7 @@ public class TurretScript : MonoBehaviour
 
         if (BulletRbody != null)
         {
+            _audioSource.PlayOneShot(shootSound);
             BulletRbody.linearVelocity = (bullet.transform.rotation) * Vector2.right * bulletSpeed;
         }
 
@@ -94,14 +94,7 @@ public class TurretScript : MonoBehaviour
             Layers
         );
 
-        if (hit.collider != null)
-        {
-            Debug.Log("Ray hit tag: " + hit.collider.tag);
-        }
-        else
-        {
-            Debug.Log("Ray hit NOTHING");
-        }
+
         shouldAim = hit.collider != null && hit.collider.CompareTag("Player");
 
         if (shouldAim)

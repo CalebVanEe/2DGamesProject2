@@ -20,6 +20,10 @@ public class SewerBladeScript : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")) _manager.playerCaught();
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerPrefs.SetString("KillMessage", "You got sliced to pieces");
+            _manager.playerCaught(); 
+        }
     }
 }

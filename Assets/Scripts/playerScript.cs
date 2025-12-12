@@ -7,24 +7,27 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(AudioSource))]
 public class playerScript : MonoBehaviour
 {
-    [Header("Movement Settings")]
+
+
+    public AudioClip jumpSound;
+    public AudioClip runSound;
+
+    AudioSource _audioSouce;
     public float maxMoveSpeed = 7f;
     public float groundAcceleration = 50f;
     public float airAcceleration = 20f;
     public float groundDeceleration = 40f;
     public float airDeceleration = 10f;
 
-    [Header("Modifiers")]
     public float sprintingMultiplier = 2f;
     public float crouchingMultiplier = 0.5f;
 
-    [Header("Player Dimensions")]
     public Vector2 standingCollider = new Vector2(1.6f, 3.4f);
     public Vector2 crouchingCollider = new Vector2(2.2f, 2.27f);
 
-    [Header("Jumping")]
     public float jumpForce = 600f;
     private enum jumpState
     {
@@ -53,6 +56,7 @@ public class playerScript : MonoBehaviour
 
     void Start()
     {
+        _audioSouce = GetComponent<AudioSource>();
         rbody = GetComponent<Rigidbody2D>();
         groundLayers = LayerMask.GetMask("Platform", "Solid Platform");
         guardLayer = LayerMask.GetMask("Guard");
@@ -86,51 +90,54 @@ public class playerScript : MonoBehaviour
         animator.SetBool("Walking", isWalking);
         animator.SetBool("Jumping", isJumping);
         animator.SetBool("Crouching", isCrouching);
-
-        if (rbody.linearVelocityX < -0.05f)
+        if (PlayerPrefs.GetInt("PlayerImmune") == 0)
         {
-            spriteRenderer.flipX = true;
-            facingRight = false;
-        }
-        else if (rbody.linearVelocityX > 0.05f)
-        {
-            spriteRenderer.flipX = false;
-            facingRight = true;
-        }
+            if (rbody.linearVelocityX < -0.05f)
+            {
+                spriteRenderer.flipX = true;
+                facingRight = false;
+            }
+            else if (rbody.linearVelocityX > 0.05f)
+            {
+                spriteRenderer.flipX = false;
+                facingRight = true;
+            }
 
-        // Set last grounded for jumping timings
-        if (onGround)
-        {
-            lastGrounded = Time.time;
-            if (Time.time - lastJump > 0.1f)
-                currentJumpState = jumpState.NoJump;
 
-            // If just landed after a wall jump, cancel the cooldown and reset horizontal velocity
+            // Set last grounded for jumping timings
+            if (onGround)
+            {
+                lastGrounded = Time.time;
+                if (Time.time - lastJump > 0.1f)
+                    currentJumpState = jumpState.NoJump;
+
+                // If just landed after a wall jump, cancel the cooldown and reset horizontal velocity
+                if (Time.time - lastWallJump < 0.4f)
+                {
+                    rbody.linearVelocityX = 0;
+                    lastWallJump = 0;
+                }
+            }
+
+            // If player tries to stand up but can't, keep trying until they can
+            if (tryStandUp)
+            {
+                if (CanStandUp())
+                {
+                    StandUp();
+                    tryStandUp = false;
+                }
+            }
+
+            // Block movement during wall jump cooldown
             if (Time.time - lastWallJump < 0.4f)
             {
-                rbody.linearVelocityX = 0;
-                lastWallJump = 0;
+                return;
             }
-        }
 
-        // If player tries to stand up but can't, keep trying until they can
-        if (tryStandUp)
-        {
-            if (CanStandUp())
-            {
-                StandUp();
-                tryStandUp = false;
-            }
+            // Handle movement with acceleration
+            HandleMovement(onGround);
         }
-
-        // Block movement during wall jump cooldown
-        if (Time.time - lastWallJump < 0.4f)
-        {
-            return;
-        }
-
-        // Handle movement with acceleration
-        HandleMovement(onGround);
     }
 
     private void HandleMovement(bool onGround)
@@ -314,6 +321,7 @@ public class playerScript : MonoBehaviour
                 {
                     currentJumpState = jumpState.Walking;
                 }
+                _audioSouce.PlayOneShot(jumpSound);
                 rbody.AddForce(Vector2.up * jumpForce);
             }
             else if (!CanGoLeft() && moveDirection < 0 && !isCrouching)

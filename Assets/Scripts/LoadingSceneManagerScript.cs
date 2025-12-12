@@ -11,7 +11,7 @@ public class LoadingSceneManagerScript : MonoBehaviour
     private string Level2Message = "You found yourself trapped behind a security door, find the combination to escape";
     private string Level3Message = "You've made your way to the cell block. It is past curfew, avoid the guards and find a way out";
     private string Level4Message = "You've escaped the cell block, and find yourself locked in the Warden's Office. Find the 2 keys to unlock the door";
-    private string Level5Message = "You stumbled into the prison armory, the guards here are heavily armed. Run for your life";
+    private string Level5Message = "You stumbled into the prison Sewer, open the gates and avoid the turrets to make it to the Prison Yard. ";
     private string Level6Message = "You've made your way out to the prison yard. All the guards have been notified of your absence and are looking for you. Escape or die";
     private string CompletionMessage = "You finally escaped the Russian Prison and reunited with your family after 10 years of imprisonment";
     public int levelIndex;

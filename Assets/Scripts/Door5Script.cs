@@ -22,4 +22,5 @@ public class Door5Script : MonoBehaviour
             scene.hitDoor();
         }
     }
+
 }

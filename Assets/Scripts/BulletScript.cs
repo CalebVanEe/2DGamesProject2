@@ -34,6 +34,8 @@ public class bulletScript : MonoBehaviour
         gameObject.SetActive(false);
         if (PlayerPrefs.GetInt("PlayerImmune") == 0 && collision.gameObject.CompareTag("Player")) 
         {
+            PlayerPrefs.SetString("KillMessage", "You got Shot");
+
             _manager.playerCaught();
         }
     }

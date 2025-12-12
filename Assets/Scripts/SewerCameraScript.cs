@@ -5,23 +5,17 @@ using System.Collections;
 using System.Collections.Generic;
 public class SewerCameraScript : MonoBehaviour
 {
-    [Header("Target")]
     public GameObject player;
     public Vector3 offset = new Vector3(0, 0, -10);
 
-    [Header("Horizontal Deadzone")]
-    [Range(0f, 0.5f)]
+
     public float leftDeadzonePercent = 0.3f;
-    [Range(0.5f, 1f)]
     public float rightDeadzonePercent = 0.5f;
 
-    [Header("Vertical Deadzone")]
-    [Range(0f, 0.5f)]
+
     public float bottomDeadzonePercent = 0.35f;
-    [Range(0.5f, 1f)]
     public float topDeadzonePercent = 0.65f;
 
-    [Header("Camera Smoothing")]
     public float cameraSmoothSpeed = 8f;
 
     private Vector3 targetPosition;

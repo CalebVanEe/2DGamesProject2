@@ -46,6 +46,7 @@ public class SewerSceneManager : MonoBehaviour
     }
     public void playerCaught()
     {
+        Debug.Log("Player Caught Called");
         PlayerPrefs.SetFloat("LevelTime", totalTime);
 
         int previousLives = PlayerPrefs.GetInt("Lives");
@@ -71,8 +72,10 @@ public class SewerSceneManager : MonoBehaviour
     public void hitDoor()
     {
 
-            door.GetComponent<Animator>().enabled = true;
-            Invoke("nextScene", 2);
+            PlayerPrefs.SetFloat("LevelTime", totalTime);
+            PlayerPrefs.SetInt("PlayerImmune", 1); 
+        door.GetComponent<Animator>().enabled = true;
+            Invoke("nextScene", 1);
     }
 
     public void nextScene()
