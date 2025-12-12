@@ -142,11 +142,14 @@ public class SewerCameraScript : MonoBehaviour
 
     public void publicPanTo(Vector3 panToPosition, GameObject grate) {
         track = false;
+        startPosition = transform.position;
+
         StartCoroutine(panToGrate(panToPosition, grate));
     }
 
     private IEnumerator panToGrate(Vector3 gratePosition, GameObject grate)
     {
+        gratePosition.z = offset.z;
         while (Vector3.Distance(transform.position, gratePosition) > 0.1f)
         {
             transform.position = Vector3.MoveTowards(transform.position, gratePosition, panSpeed * Time.deltaTime);
@@ -156,7 +159,8 @@ public class SewerCameraScript : MonoBehaviour
         grate.SetActive(false);
         
         yield return new WaitForSeconds(1f);
-        transform.position = player.transform.position;
+
+        transform.position = startPosition;
         track = true;
         PlayerPrefs.SetInt("PlayerImmune", 0);
     }
