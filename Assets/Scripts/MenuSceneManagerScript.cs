@@ -7,7 +7,7 @@ public class MenuSceneManagerScript : MonoBehaviour
     void Start()
     {
         PlayerPrefs.SetInt("PlayerImmune", 0);
-        PlayerPrefs.SetInt("Lives", 5);
+        PlayerPrefs.SetInt("Lives", 7);
         PlayerPrefs.SetFloat("LevelTime", 0);
         PlayerPrefs.SetString("CurrentLevel", "Level1-Caleb");
     }
@@ -19,7 +19,7 @@ public class MenuSceneManagerScript : MonoBehaviour
     }
 
     public void hitTutorial()
-    {
+    {7
         SceneManager.LoadScene("TutorialScene");
     }
     public void hitPlay()

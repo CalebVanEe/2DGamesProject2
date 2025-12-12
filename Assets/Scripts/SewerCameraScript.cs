@@ -40,6 +40,7 @@ public class SewerCameraScript : MonoBehaviour
         shouldPan = true;
         if (PlayerPrefs.GetInt("SewerIntroSeen") == 0)
         {
+            PlayerPrefs.SetInt("PlayerImmune", 1); 
             track = false;
             StartCoroutine(showLevel(grates));
         }
@@ -65,6 +66,7 @@ public class SewerCameraScript : MonoBehaviour
         }
         transform.position = startPosition;
         track = true;
+        PlayerPrefs.SetInt("PlayerImmune", 0);
         PlayerPrefs.SetInt("SewerIntroSeen", 1);
 
     }
