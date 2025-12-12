@@ -19,7 +19,7 @@ public class MenuSceneManagerScript : MonoBehaviour
     }
 
     public void hitTutorial()
-    {7
+    {
         SceneManager.LoadScene("TutorialScene");
     }
     public void hitPlay()
