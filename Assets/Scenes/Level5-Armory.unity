@@ -6171,11 +6171,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1789533086117570237, guid: 6aa669eb1b55a234ebca432c724e40d4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.38
+      value: -6.98
       objectReference: {fileID: 0}
     - target: {fileID: 1789533086117570237, guid: 6aa669eb1b55a234ebca432c724e40d4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.76
+      value: -3.81
       objectReference: {fileID: 0}
     - target: {fileID: 1789533086117570237, guid: 6aa669eb1b55a234ebca432c724e40d4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8024,7 +8024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   bulletPrefab: {fileID: 1605494537975459237, guid: 04a629c26413fb1449060be0acf3cf79, type: 3}
-  door: {fileID: 0}
+  door: {fileID: 614304791}
 --- !u!1001 &1716472071
 PrefabInstance:
   m_ObjectHideFlags: 0

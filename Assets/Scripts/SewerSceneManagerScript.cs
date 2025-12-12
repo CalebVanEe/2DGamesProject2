@@ -64,7 +64,7 @@ public class SewerSceneManager : MonoBehaviour
 
             PlayerPrefs.SetFloat("LevelTime", totalTime);
             PlayerPrefs.SetInt("PlayerImmune", 1); 
-        door.GetComponent<Animator>().enabled = true;
+            door.GetComponent<Animator>().enabled = true;
             Invoke("nextScene", 1);
     }
 

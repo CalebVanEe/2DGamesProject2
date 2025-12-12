@@ -40,7 +40,7 @@ public class SewerCameraScript : MonoBehaviour
         shouldPan = true;
         if (PlayerPrefs.GetInt("SewerIntroSeen") == 0)
         {
-            PlayerPrefs.SetInt("PlayerImmune", 1); 
+            PlayerPrefs.SetInt("PlayerImmune", 1);
             track = false;
             StartCoroutine(showLevel(grates));
         }
