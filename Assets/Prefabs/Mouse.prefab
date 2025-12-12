@@ -112,7 +112,7 @@ MonoBehaviour:
   platformLayer:
     serializedVersion: 2
     m_Bits: 512
-  playerTop: {fileID: 679917606479214226, guid: 95e80923885a3c54c90dc50b84bd1e3a, type: 3}
+  playerTop: {fileID: 4509075367670901094, guid: 0f7708f49dde11f42969fc2ed780f15c, type: 3}
   playerBottom: {fileID: 5073144377845427018, guid: f883266f4a8cebc4eb3d10d8b4c15f9a, type: 3}
 --- !u!50 &8391974618547815337
 Rigidbody2D:

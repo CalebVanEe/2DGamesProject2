@@ -21,6 +21,7 @@ public class mouseScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        PlayerPrefs.SetInt("PlayerImmune", 0);
         wayToMove = Vector3.right * speed;
         facingRight = true;
         r = GetComponent<Rigidbody2D>();
@@ -90,10 +91,11 @@ public class mouseScript : MonoBehaviour
                 return;
             GameObject topHalf = Instantiate(playerTop, collision.transform.position, Quaternion.identity);
             GameObject bottomHalf = Instantiate(playerBottom, collision.transform.position - Vector3.up * 0.5f, Quaternion.identity);
-            topHalf.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(-2f, 1f);
-            bottomHalf.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(2f, 0);
+            topHalf.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(-3f, 1f);
+            bottomHalf.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(3f, 0);
             GameObject player = collision.gameObject;
             player.GetComponent<SpriteRenderer>().enabled = false;
+            PlayerPrefs.SetInt("PlayerImmune", 1);
             playerDead = true;
             Invoke("KillPlayer", 2f);
         }
