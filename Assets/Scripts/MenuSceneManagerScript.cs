@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class MenuSceneManagerScript : MonoBehaviour
@@ -15,7 +16,10 @@ public class MenuSceneManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+        Application.Quit();
+        }
     }
 
     public void hitTutorial()
