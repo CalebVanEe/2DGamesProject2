@@ -34,16 +34,19 @@ public class bulletScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        gameObject.SetActive(false);
         if (PlayerPrefs.GetInt("PlayerImmune") == 0 && collision.gameObject.CompareTag("Player")) 
         {
-            GameObject deadPlayer = Instantiate(knockedOutSprite, collision.transform.position, Quaternion.identity);
+            Invoke("KillPlayer", 2f);
+
+            Destroy(collision.gameObject);
+            Vector2 position = collision.transform.position;
+            GameObject deadPlayer = Instantiate(knockedOutSprite, position, Quaternion.identity);
             deadPlayer.GetComponent<Rigidbody2D>().angularVelocity = 5f;
             sewerCameraScript.SetPlayer(deadPlayer);
-            Destroy(collision.gameObject);
             PlayerPrefs.SetString("KillMessage", "You got Shot");
-            Invoke("KillPlayer", 2f);
         }
+        gameObject.SetActive(false);
+
     }
     private void KillPlayer()
     {
