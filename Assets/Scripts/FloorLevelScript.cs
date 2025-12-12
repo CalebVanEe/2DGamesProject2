@@ -41,6 +41,7 @@ public class FloorLevelScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        updateTimer();
         if (codeInput.text.Equals(code))
         {
             lyk.text = "That is the correct code! Exit through the door!";
