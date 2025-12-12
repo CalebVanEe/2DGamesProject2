@@ -116,6 +116,13 @@ public class FloorLevelScript : MonoBehaviour
         lyk.enabled = false;
     }
 
+    private void nextLevel()
+    {
+        SceneManager.LoadScene("Level3LoadingScreen");
+
+    }
+    
+
     public void hitDoor()
     { 
         if (correctCode)
@@ -125,7 +132,8 @@ public class FloorLevelScript : MonoBehaviour
 
             PlayerPrefs.SetFloat("LevelTime", totalTime);
 
-            SceneManager.LoadScene("Level3LoadingScreen");
+            Invoke("nextLevel", 2f);
+
         }
         else
         {
