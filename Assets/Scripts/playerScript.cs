@@ -335,6 +335,7 @@ public class playerScript : MonoBehaviour
                 currentJumpState = jumpState.Walking;
                 rbody.linearVelocity = new Vector2(0, 0);
                 rbody.AddForce(new Vector2(jumpForce, jumpForce));
+                _audioSouce.PlayOneShot(jumpSound);
                 lastWallJump = Time.time;
             }
             else if (!CanGoRight() && moveDirection > 0 && !isCrouching)
@@ -343,6 +344,7 @@ public class playerScript : MonoBehaviour
                 currentJumpState = jumpState.Walking;
                 rbody.linearVelocity = new Vector2(0, 0);
                 rbody.AddForce(new Vector2(-jumpForce, jumpForce));
+                _audioSouce.PlayOneShot(jumpSound);
                 lastWallJump = Time.time;
             }
             lastJump = Time.time;
