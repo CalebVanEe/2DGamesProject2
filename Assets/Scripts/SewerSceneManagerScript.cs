@@ -18,11 +18,20 @@ public class SewerSceneManager : MonoBehaviour
 
         lastLevelTime = PlayerPrefs.GetFloat("LevelTime");
         startTime = Time.time;
+
         PlayerPrefs.SetInt("PlayerImmune", 1);
+        if (PlayerPrefs.GetInt("SewerIntroSeen") == 1)
+        {
+            Invoke("UnlockPlayer", 0.1f);
+        }
 
         bulletpool = new ObjectPool(bulletPrefab, true, 20);
 
 
+    }
+    void UnlockPlayer()
+    {
+        PlayerPrefs.SetInt("PlayerImmune", 0);
     }
 
     float levelTime;
