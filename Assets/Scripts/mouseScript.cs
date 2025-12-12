@@ -33,7 +33,7 @@ public class mouseScript : MonoBehaviour
     void Update()
     {
         blocked = false;
-        if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 3f, targetLayer))
+        if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, 2f, targetLayer))
         {
             //if (r.linearVelocityX > 0)
             //{
@@ -48,7 +48,7 @@ public class mouseScript : MonoBehaviour
             //}
 
         }
-        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 3f, targetLayer))
+        else if (Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, 2f, targetLayer))
         {
             //if (r.linearVelocityX > 0)
             //{
