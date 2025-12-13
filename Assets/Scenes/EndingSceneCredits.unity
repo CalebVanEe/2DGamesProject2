@@ -990,31 +990,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'ChatGPT generated the following sprites:
-
-    - Player
-
-    - Guard
+  m_text: 'ChatGPT generated all of the sprites except for the following:
 
     -
-    Barrel
+    Box
 
-    - Car
+    - Bat
 
-    - Axe
+    - Door
 
-    - Saw
+    - Desk
 
-    - Heart
-
-    - Level 3 Background
-
-    -
-    Level 1 Background
-
-    - LoadingScreen Background
-
-    - Dirt Background'
+    - Ivy'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 57274839b611d474c982a1728e7a88a0, type: 2}
   m_sharedMaterial: {fileID: 9025128809579277013, guid: 57274839b611d474c982a1728e7a88a0, type: 2}

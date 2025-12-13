@@ -43,13 +43,13 @@ public class bulletScript : MonoBehaviour
             GameObject deadPlayer = Instantiate(knockedOutSprite, position, Quaternion.identity);
             deadPlayer.GetComponent<Rigidbody2D>().angularVelocity = 5f;
             sewerCameraScript.SetPlayer(deadPlayer);
-            PlayerPrefs.SetString("KillMessage", "You got Shot");
         }
         gameObject.SetActive(false);
 
     }
     private void KillPlayer()
     {
+        PlayerPrefs.SetString("KillMessage", "You got Shot");
         _manager.playerCaught();
     }
 }
